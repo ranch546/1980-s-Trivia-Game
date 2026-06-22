@@ -406,6 +406,10 @@ AN.UI.updateLifelineBtn = () => {
         && !r.lifelineUsedThisQuestion);
     btn?.classList.toggle('hidden', !show);
     if (show) btn.disabled = false;
+    requestAnimationFrame(() => {
+        AN.UI.syncDockHeight();
+        requestAnimationFrame(() => AN.UI.syncDockHeight());
+    });
 };
 
 AN.UI.refreshTriviaCards = (q, eliminated = new Set()) => {
@@ -443,7 +447,6 @@ AN.UI.showTrivia = (q, index, total, timelineId, eliminated = new Set()) => {
 
     const sl = AN.UI.$('hudStopLabel');
     if (sl) sl.textContent = `Q ${index + 1} / ${total}`;
-    AN.UI.syncDockHeight();
     AN.UI.$('triviaQuestion').textContent = q.question;
     const limit = AN.run?.triviaTimeLimit || AN.triviaTimeLimit(AN.run?.save);
     AN.UI.updateTriviaTimer(limit, limit);
@@ -469,6 +472,10 @@ AN.UI.showTrivia = (q, index, total, timelineId, eliminated = new Set()) => {
     });
     AN.UI.setLifelineActive(!!AN.run?.lifeline5050Active);
     AN.UI.updateLifelineBtn();
+    requestAnimationFrame(() => {
+        AN.UI.syncDockHeight();
+        requestAnimationFrame(() => AN.UI.syncDockHeight());
+    });
 };
 
 AN.UI.updateTriviaTimer = (t, limit) => {
