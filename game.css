@@ -1,5 +1,5 @@
 /*
- * build: 81 — keep in sync with index.html game.css?v=81
+ * build: 82 — keep in sync with index.html game.css?v=82
  * ═══════════════════════════════════════════════════════════════════════════
  * game.css — ALL VISUAL STYLES (Presentation / Judge Guide)
  * ═══════════════════════════════════════════════════════════════════════════
@@ -204,8 +204,7 @@ body.phase-play #shakeRoot { z-index: 10; }
     max-width: min(44vw, 360px);
 }
 .dock-run-time {
-    font-family: var(--font-h); font-size: clamp(1rem, 1.8vw, 1.2rem);
-    color: rgba(200,200,220,0.85); margin-top: 2px;
+    display: none;
 }
 .dock-hub-btn {
     pointer-events: auto; cursor: pointer;
@@ -1418,12 +1417,17 @@ body.phase-play #shakeRoot { z-index: 10; }
 .mg-score-txt { font-family: var(--font-h); font-size: clamp(1rem, 2.2vw, 1.35rem); color: var(--gold); }
 .mg-pat-msg { font-size: clamp(1rem, 2vw, 1.25rem); color: #aab; }
 
-.phase-play .trivia-screen {
+.phase-play .trivia-screen:not(.hidden) {
     justify-content: stretch !important;
     align-items: stretch !important;
-    padding: calc(var(--dock-h, 100px) + 10px) 0 0 !important;
-    min-height: 0; height: 100%;
-    box-sizing: border-box; overflow: hidden;
+    inset: auto 0 0 0 !important;
+    top: var(--dock-h, 150px) !important;
+    height: auto !important;
+    padding: 0 !important;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 22;
 }
 .phase-play .trivia-result:not(.hidden) {
     display: flex !important;
@@ -1495,9 +1499,11 @@ body.phase-play #shakeRoot { z-index: 10; }
 }
 
 .trivia-panel {
-    flex: 1; display: flex; flex-direction: column;
-    gap: clamp(8px, 1.2vh, 14px);
-    padding: clamp(8px, 1.2vh, 14px) clamp(14px, 2.5vw, 32px) clamp(10px, 1.5vh, 18px);
+    flex: 1; display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 10px;
+    height: 100%;
+    padding: 10px clamp(12px, 2vw, 28px) 12px;
     background: linear-gradient(165deg, rgba(14,4,28,0.98), rgba(4,2,12,0.99));
     border: none;
     border-radius: 0;
@@ -1506,12 +1512,12 @@ body.phase-play #shakeRoot { z-index: 10; }
 }
 .trivia-top {
     display: flex;
-    align-items: center;
-    gap: clamp(12px, 2vw, 20px);
-    flex: 0 0 auto;
+    align-items: stretch;
+    gap: 14px;
     flex-shrink: 0;
-    min-height: 0;
-    max-height: 34%;
+    min-height: 84px;
+    max-height: none;
+    z-index: 5;
 }
 .trivia-timer-wrap {
     position: static;
@@ -1523,11 +1529,11 @@ body.phase-play #shakeRoot { z-index: 10; }
     background: repeating-linear-gradient(0deg, transparent, transparent 2px, #fff 2px, #fff 4px);
 }
 .trivia-timer-ring {
-    width: clamp(64px, 9vw, 88px); height: clamp(64px, 9vw, 88px); border-radius: 50%; flex-shrink: 0;
+    width: clamp(76px, 11vw, 104px); height: clamp(76px, 11vw, 104px); border-radius: 50%; flex-shrink: 0;
     background: conic-gradient(from -90deg, var(--pink) 0 var(--pct, 100%), #1a0828 var(--pct, 100%) 100%);
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-h); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 900;
-    box-shadow: 0 0 24px rgba(255,43,214,0.45);
+    font-family: var(--font-h); font-size: clamp(1.75rem, 3.5vw, 2.4rem); font-weight: 900;
+    box-shadow: 0 0 28px rgba(255,43,214,0.55), 0 0 0 3px rgba(0,245,255,0.45);
     transition: box-shadow 0.2s;
 }
 .trivia-timer-ring.urgent {
@@ -1590,19 +1596,23 @@ body.phase-play #shakeRoot { z-index: 10; }
 }
 .trivia-q-frame {
     position: relative; z-index: 1;
-    flex: 1; min-width: 0; min-height: 0;
+    flex: 1; min-width: 0;
     margin: 0;
-    padding: clamp(12px, 2vh, 22px) clamp(14px, 2.5vw, 24px);
-    border-radius: 16px;
-    background: rgba(0,0,0,0.45); border: 2px solid rgba(0,245,255,0.25);
-    box-shadow: inset 0 0 40px rgba(0,245,255,0.06);
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgba(24,10,48,0.98), rgba(8,4,20,0.99));
+    border: 3px solid var(--cyan);
+    box-shadow: 0 0 24px rgba(0,245,255,0.25), inset 0 0 30px rgba(0,245,255,0.08);
     display: flex; align-items: center; justify-content: center;
     overflow-y: auto;
 }
 .trivia-question {
-    font-size: clamp(1.25rem, 3.2vw, 2.2rem); font-weight: 700; line-height: 1.3;
-    text-align: center; color: #fff;
-    text-shadow: 0 2px 24px rgba(255,43,214,0.25);
+    font-size: clamp(1.15rem, 2.8vw, 2rem);
+    font-weight: 800;
+    line-height: 1.35;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(0,245,255,0.45), 0 2px 8px rgba(0,0,0,0.9);
 }
 .trivia-cards {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(8px, 1.2vh, 14px);
@@ -1638,6 +1648,7 @@ body.phase-play #shakeRoot { z-index: 10; }
 .tc-img-wrap {
     position: relative; flex: 1 1 auto;
     min-height: 0;
+    max-height: 62%;
     width: 100%;
     display: flex; align-items: center; justify-content: center;
     padding: clamp(10px, 1.6vh, 16px) clamp(10px, 1.8vw, 14px);
