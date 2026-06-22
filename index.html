@@ -20,6 +20,9 @@
     (function () {
         var REF_W = 1920;
         var REF_H = 1080;
+        var SCALE = 0.625;
+        var SCALE_MIN = 0.48;
+        var resizeTimer;
 
         function syncViewport() {
             var w = window.innerWidth;
@@ -27,31 +30,37 @@
             document.documentElement.style.setProperty('--app-h', h + 'px');
             document.documentElement.style.setProperty('--app-w', w + 'px');
             var fit = Math.min(w / REF_W, h / REF_H);
-            var scale = Math.max(0.42, fit * 0.5);
+            var scale = Math.max(SCALE_MIN, fit * SCALE);
             document.documentElement.style.setProperty('--ui-scale', String(scale));
         }
+        function onResize() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(syncViewport, 80);
+        }
         syncViewport();
-        window.addEventListener('resize', syncViewport);
+        window.addEventListener('resize', onResize);
         window.addEventListener('orientationchange', function () {
-            setTimeout(syncViewport, 100);
+            setTimeout(syncViewport, 150);
         });
         if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', syncViewport);
+            window.visualViewport.addEventListener('resize', onResize);
         }
-        document.addEventListener('touchmove', function (e) {
-            var el = e.target;
-            while (el && el !== document.documentElement) {
-                if (el.classList && el.classList.contains('scroll-allow')) return;
-                var oy = window.getComputedStyle(el).overflowY;
-                if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 2) return;
-                el = el.parentElement;
-            }
-            e.preventDefault();
-        }, { passive: false });
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchmove', function (e) {
+                var el = e.target;
+                while (el && el !== document.documentElement) {
+                    if (el.classList && el.classList.contains('scroll-allow')) return;
+                    var oy = window.getComputedStyle(el).overflowY;
+                    if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 2) return;
+                    el = el.parentElement;
+                }
+                e.preventDefault();
+            }, { passive: false });
+        }
     })();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="game.css?v=79">
+    <link rel="stylesheet" href="game.css?v=80">
 </head>
 <body class="phase-boot">
     <div id="gameLayer">
@@ -460,11 +469,11 @@
     <script src="globalLeaderboard.js?v=1"></script>
     <script src="profiles.js?v=50"></script>
     <script src="cueArt.js?v=62"></script>
-    <script src="fx.js?v=32"></script>
+    <script src="fx.js?v=33"></script>
     <script src="minigames.js?v=67"></script>
     <script src="worlds.js?v=32"></script>
-    <script src="engine.js?v=45"></script>
+    <script src="engine.js?v=46"></script>
     <script src="ui.js?v=64"></script>
-    <script src="main.js?v=58"></script>
+    <script src="main.js?v=59"></script>
 </body>
 </html>

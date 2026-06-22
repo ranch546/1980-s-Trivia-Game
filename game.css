@@ -1,5 +1,5 @@
 /*
- * build: 79 — keep in sync with index.html game.css?v=79
+ * build: 80 — keep in sync with index.html game.css?v=80
  * ═══════════════════════════════════════════════════════════════════════════
  * game.css — ALL VISUAL STYLES (Presentation / Judge Guide)
  * ═══════════════════════════════════════════════════════════════════════════
@@ -52,6 +52,17 @@ html, body {
     position: fixed; inset: 0; z-index: 0;
     background: #12082a;
 }
+#gameLayer.canvas-off,
+body.phase-boot #gameLayer,
+body.phase-hub #gameLayer {
+    visibility: hidden;
+    pointer-events: none;
+}
+#gameLayer.canvas-off canvas,
+body.phase-boot #gameLayer canvas,
+body.phase-hub #gameLayer canvas {
+    display: none;
+}
 #gameCanvas {
     position: absolute; inset: 0; z-index: 1;
     display: block; width: 100%; height: 100%;
@@ -59,6 +70,11 @@ html, body {
 #fxCanvas {
     position: absolute; inset: 0; z-index: 2;
     pointer-events: none; width: 100%; height: 100%;
+}
+body.phase-boot #fxCanvas,
+body.phase-login #fxCanvas,
+body.phase-hub #fxCanvas {
+    display: none;
 }
 #shakeRoot {
     position: fixed;
@@ -76,9 +92,11 @@ html, body {
     top: 0; left: 0;
     width: calc(var(--app-w) / var(--ui-scale));
     height: calc(var(--app-h) / var(--ui-scale));
-    transform: scale(var(--ui-scale));
+    transform: translateZ(0) scale(var(--ui-scale));
     transform-origin: top left;
     overflow: hidden;
+    contain: layout style paint;
+    backface-visibility: hidden;
 }
 #uiScale .view:not(.hidden),
 #shakeRoot .view:not(.hidden),
@@ -147,6 +165,10 @@ body.phase-play #shakeRoot { z-index: 10; }
     filter: drop-shadow(0 0 20px rgba(0,245,255,0.3));
 }
 @keyframes pbGridScroll { to { background-position: 0 64px, 64px 0, 0 64px; } }
+.play-backdrop.hidden .pb-grid,
+.play-backdrop.hidden .pb-scan {
+    animation-play-state: paused;
+}
 .pb-scan {
     position: absolute; inset: 0; opacity: 0.04;
     background: repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px);
@@ -292,7 +314,7 @@ body.phase-play #shakeRoot { z-index: 10; }
     50% { transform: scale(1.1); }
 }
 .scanlines {
-    position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: 0.07;
+    position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: 0.04;
     background: repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px);
 }
 .vignette {
@@ -1321,8 +1343,7 @@ body.phase-play #shakeRoot { z-index: 10; }
 .minigame-screen:not(.hidden) {
     z-index: 180;
     padding: calc(var(--dock-h, 88px) + 8px) 10px 12px !important;
-    background: linear-gradient(180deg, rgba(5,2,12,0.55) 0%, rgba(5,2,12,0.92) 100%);
-    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(5,2,12,0.92) 0%, rgba(5,2,12,0.98) 100%);
     display: flex !important;
     align-items: stretch;
     justify-content: center;

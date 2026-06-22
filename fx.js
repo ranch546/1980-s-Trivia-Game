@@ -11,6 +11,13 @@ AN.FX = {};
 let fxCtx, fxCanvas, particles = [];
 let audioCtx;
 
+AN.FX._particlesOn = false;
+
+AN.FX.setParticles = (on) => {
+    AN.FX._particlesOn = !!on;
+    if (!on) particles = [];
+};
+
 AN.FX.init = () => {
     fxCanvas = document.getElementById('fxCanvas');
     fxCtx = fxCanvas?.getContext('2d');
@@ -194,7 +201,7 @@ AN.FX.ambient = () => {
 
 AN.FX.loop = () => {
     requestAnimationFrame(AN.FX.loop);
-    if (!fxCtx) return;
+    if (!fxCtx || !AN.FX._particlesOn) return;
     fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
     AN.FX.ambient();
     particles = particles.filter(p => {

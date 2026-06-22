@@ -24,7 +24,7 @@ AN.Engine.init = () => {
         alpha: false,
         powerPreference: 'high-performance'
     });
-    E.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    E.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     E.resize = () => {
         const w = window.innerWidth, h = window.innerHeight;
         if (w < 2 || h < 2) return;

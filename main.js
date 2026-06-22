@@ -136,15 +136,25 @@ AN.Main = {
         addEventListener('resize', () => AN.UI.syncDockHeight?.());
 
         let last = performance.now();
+        let idleSkip = 0;
         const loop = (now) => {
             requestAnimationFrame(loop);
+            const r = AN.run;
+            const phase = r?.phase;
+            const needs3d = phase === 'play' && r.playSub === 'lifeline' && !AN.Engine.uiMode;
+            if (!needs3d) {
+                idleSkip++;
+                if (idleSkip % 6 !== 0) return;
+            } else {
+                idleSkip = 0;
+            }
             const dt = Math.min(0.05, (now - last) / 1000);
             last = now;
-            if (AN.run?.phase === 'play' && AN.run.playSub === 'lifeline' && !AN.run.paused) {
-                AN.run.time += dt;
+            if (needs3d && !r.paused) {
+                r.time += dt;
             }
-            if (AN.run?.phase === 'play') AN.Engine.update(dt);
-            AN.Engine.render();
+            if (needs3d) AN.Engine.update(dt);
+            if (needs3d) AN.Engine.render();
         };
         loop(last);
     },
