@@ -16,6 +16,8 @@
 /* ARCADE NATIONALS — AAA synthwave arcade UI */
 :root {
     --dock-h: 140px;
+    --app-max-w: 1180px;
+    --app-max-h: 820px;
     --void: #05020c;
     --pink: #ff2bd6;
     --cyan: #00f5ff;
@@ -32,7 +34,63 @@
 html, body {
     width: 100%; height: 100%; overflow: hidden;
     background: var(--void); color: #fff;
-    font-family: var(--font-b); font-size: 20px;
+    font-family: var(--font-b); font-size: clamp(14px, 1.6vh, 18px);
+}
+
+body {
+    display: flex; align-items: center; justify-content: center;
+}
+
+#appShell {
+    position: relative;
+    width: min(100vw, var(--app-max-w));
+    height: min(100vh, var(--app-max-h));
+    max-height: 92vh;
+    overflow: hidden;
+    border: 2px solid rgba(0, 245, 255, 0.22);
+    border-radius: 14px;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.75), 0 0 48px rgba(255, 43, 214, 0.12);
+    background: #12082a;
+}
+
+#appShell #gameLayer,
+#appShell .scanlines,
+#appShell .vignette,
+#appShell #screenFlash,
+#appShell #shakeRoot {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+}
+
+#appShell #gameLayer { z-index: 0; }
+#appShell #shakeRoot { z-index: 10; pointer-events: none; }
+#appShell .scanlines { z-index: 4; }
+#appShell .vignette { z-index: 5; }
+#appShell #screenFlash { z-index: 6; }
+
+#appShell .view,
+#appShell .status-dock,
+#appShell .play-backdrop,
+#appShell .view-victory,
+#appShell .view-defeat,
+#appShell .trivia-result:not(.hidden),
+#appShell .level-up-overlay,
+#appShell .achievement-toast,
+#appShell .float-score,
+#appShell .toast-bar {
+    position: absolute;
+}
+
+#appShell .view {
+    overflow-y: auto;
+    min-height: 100%;
+    height: 100%;
+}
+
+#appShell .view-victory,
+#appShell .view-defeat,
+#appShell .trivia-result:not(.hidden) {
+    width: 100%; height: 100%;
+    inset: 0;
 }
 
 #gameLayer {
@@ -356,15 +414,15 @@ body.phase-play #shakeRoot { z-index: 10; }
 /* PLAYER LOGIN */
 .view-login {
     justify-content: center; align-items: center;
-    padding: 20px 16px; overflow-y: auto; min-height: 100vh; box-sizing: border-box;
+    padding: 16px 12px; overflow-y: auto; min-height: 100%; box-sizing: border-box;
     background:
         radial-gradient(ellipse at 50% 20%, rgba(0,245,255,0.15), transparent 50%),
         radial-gradient(ellipse at 80% 80%, rgba(255,43,214,0.12), transparent 45%),
         var(--void);
 }
 .login-shell {
-    width: min(900px, 98vw); min-height: min(92vh, 900px);
-    padding: clamp(32px, 5vh, 56px) clamp(28px, 5vw, 64px);
+    width: min(520px, 94%); min-height: auto;
+    padding: clamp(20px, 3vh, 32px) clamp(20px, 4vw, 36px);
     display: flex; flex-direction: column; justify-content: center;
     background: linear-gradient(165deg, rgba(14,4,28,0.98), rgba(4,2,12,0.99));
     border: 3px solid var(--cyan); border-radius: 28px;
@@ -375,10 +433,10 @@ body.phase-play #shakeRoot { z-index: 10; }
     letter-spacing: 0.25em; color: var(--cyan); margin-bottom: 12px;
 }
 .login-title {
-    font-family: var(--font-h); font-size: clamp(2rem, 6vw, 3.5rem);
+    font-family: var(--font-h); font-size: clamp(1.5rem, 4vw, 2.2rem);
     text-align: center; color: var(--gold); margin-bottom: 12px;
 }
-.login-sub { text-align: center; color: #99a; font-size: clamp(1.1rem, 2.5vw, 1.45rem); margin-bottom: 32px; line-height: 1.45; }
+.login-sub { text-align: center; color: #99a; font-size: clamp(0.95rem, 2vw, 1.15rem); margin-bottom: 20px; line-height: 1.45; }
 .player-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; max-height: 40vh; overflow-y: auto; }
 .player-card-wrap { display: flex; align-items: stretch; gap: 8px; }
 .player-card {
@@ -466,15 +524,15 @@ body.phase-play #shakeRoot { z-index: 10; }
 .view-hub {
     justify-content: stretch; align-items: stretch;
     padding: 0; overflow-y: auto;
-    min-height: 100vh; height: 100vh; box-sizing: border-box;
+    min-height: 100%; height: 100%; box-sizing: border-box;
     background:
         radial-gradient(ellipse at 50% 20%, rgba(255,43,214,0.22), transparent 55%),
         radial-gradient(ellipse at 50% 100%, rgba(0,245,255,0.12), transparent 50%),
         var(--void);
 }
 .hub-shell {
-    width: 100%; min-height: 100vh; max-width: none;
-    padding: clamp(28px, 4vh, 48px) clamp(24px, 4vw, 64px) clamp(32px, 5vh, 56px);
+    width: 100%; min-height: 100%; max-width: none;
+    padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 48px) clamp(24px, 4vh, 40px);
     margin: 0;
     display: flex; flex-direction: column; justify-content: center;
     background: linear-gradient(165deg, rgba(16,6,32,0.97), rgba(6,2,14,0.99));
@@ -489,7 +547,7 @@ body.phase-play #shakeRoot { z-index: 10; }
     text-shadow: 0 0 16px rgba(0,245,255,0.4);
 }
 .hub-brand {
-    font-family: var(--font-h); font-size: clamp(2.2rem, 7vw, 4.5rem);
+    font-family: var(--font-h); font-size: clamp(1.8rem, 5vw, 3rem);
     font-weight: 900; text-align: center; line-height: 1.1;
     color: var(--gold); margin-bottom: clamp(20px, 3vh, 36px);
     text-shadow: 0 0 30px rgba(255,213,74,0.35), 0 0 60px rgba(255,43,214,0.2);
@@ -517,7 +575,7 @@ body.phase-play #shakeRoot { z-index: 10; }
 .hub-coins-icon { font-size: clamp(3rem, 8vw, 4.5rem); line-height: 1; filter: drop-shadow(0 0 16px rgba(255,213,74,0.5)); }
 .hub-coins-value {
     font-family: var(--font-h); font-weight: 900; line-height: 1;
-    font-size: clamp(3.5rem, 10vw, 5.5rem);
+    font-size: clamp(2.2rem, 6vw, 3.25rem);
     color: var(--gold);
     text-shadow: 0 0 28px rgba(255,213,74,0.65), 0 0 60px rgba(255,213,74,0.25);
     letter-spacing: 0.04em;

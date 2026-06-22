@@ -266,12 +266,22 @@ AN.AnswerImages.init = () => {
         norm(AN.AnswerImages.loaded);
     };
     applyLoaded(null);
-    return fetch('content/answer-images.json')
-        .then(r => r.ok ? r.json() : null)
-        .then(d => {
-            applyLoaded(d?.images);
+    if (AN.ANSWER_IMAGES_JSON?.images) {
+        applyLoaded(AN.ANSWER_IMAGES_JSON.images);
+        norm(AN.AnswerImages.loaded);
+        AN.AnswerImages.resolveAllFilePathUrls({ ...AN.AnswerImages.loaded }).then(resolved => {
+            Object.assign(AN.AnswerImages.loaded, resolved);
             norm(AN.AnswerImages.loaded);
-            AN.AnswerImages.resolveAllFilePathUrls({ ...AN.AnswerImages.loaded }).then(resolved => {
+        });
+        return Promise.resolve();
+    }
+    const base = document.baseURI || window.location.href;
+    const loadJson = (file) => fetch(new URL(file, base).href)
+        .then(r => (r.ok ? r.json() : null))
+        .then(d => {
+            if (d?.images) applyLoaded(d.images);
+            norm(AN.AnswerImages.loaded);
+            return AN.AnswerImages.resolveAllFilePathUrls({ ...AN.AnswerImages.loaded }).then(resolved => {
                 Object.assign(AN.AnswerImages.loaded, resolved);
                 norm(AN.AnswerImages.loaded);
             });
@@ -280,6 +290,10 @@ AN.AnswerImages.init = () => {
             applyLoaded(null);
             norm(AN.AnswerImages.loaded);
         });
+    return loadJson('answer-images.json').then(done => {
+        if (Object.keys(AN.AnswerImages.loaded).length > Object.keys(AN.AnswerImages.STATIC).length) return done;
+        return loadJson('content/answer-images.json');
+    });
 };
 
 /** Instant lookup — used before async wiki fallback */

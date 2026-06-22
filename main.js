@@ -34,16 +34,13 @@ AN.Main = {
 
         AN._imagesReady = AN.AnswerImages?.init?.() || Promise.resolve();
         AN._bootReady = Promise.all([
-            fetch('content/questions.json')
-                .then(r => r.json())
-                .then(d => { if (d.questions?.length) AN.bank = d.questions; })
-                .catch(() => {}),
+            AN.loadQuestionBank(),
             AN._imagesReady
         ]);
 
         AN.UI.boot(() => {
             AN._bootReady.then(() => {
-                if (!AN.bank?.length) AN.UI.toast('Use Live Server for questions', false);
+                if (!AN.bank?.length) AN.UI.toast('Questions missing — add questions.json next to index.html', false);
                 AN.run.phase = 'login';
                 const active = AN.Profiles.getActive();
                 if (active && !active.pin) AN.Main.loginAs(active.id);
@@ -157,7 +154,7 @@ AN.Main = {
             const tl = AN.TIMELINES[AN.JOURNEY_ID];
             if (!tl) return;
             if (!AN.bank?.length) {
-                AN.UI.toast('Questions not loaded — use Live Server', false);
+                AN.UI.toast('Questions missing — add questions.json next to index.html', false);
                 return;
             }
             const r = AN.run;
@@ -168,7 +165,7 @@ AN.Main = {
                 r.questions = AN.pickStructuredRun(AN.bank, resetSave);
             }
             if (!r.questions.length) {
-                AN.UI.toast('Questions not loaded — use Live Server', false);
+                AN.UI.toast('Not enough questions in bank — check content/questions', false);
                 return;
             }
             AN.Main.resetRunForNewQuiz();

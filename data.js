@@ -436,6 +436,20 @@ AN.advanceLevelCursors = (save, bank, run) => {
 
 AN.pickAdaptiveQuestions = (bank, save) => AN.pickStructuredRun(bank, save);
 
+/** Load questions from bundled JS or questions.json in same folder as index.html */
+AN.loadQuestionBank = () => {
+    if (AN.QUESTION_BANK_JSON?.questions?.length) {
+        AN.bank = AN.QUESTION_BANK_JSON.questions;
+        return Promise.resolve();
+    }
+    const base = document.baseURI || window.location.href;
+    const tryFile = (file) => fetch(new URL(file, base).href)
+        .then(r => (r.ok ? r.json() : null))
+        .then(d => { if (d?.questions?.length) AN.bank = d.questions; })
+        .catch(() => {});
+    return tryFile('questions.json').then(() => (AN.bank?.length ? null : tryFile('content/questions.json')));
+};
+
 AN.pointsFor = () => AN.SCORE_CORRECT;
 
 AN.pointsForWrong = () => AN.SCORE_WRONG;
