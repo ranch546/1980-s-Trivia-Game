@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey Through the 1980s</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="game.css?v=72">
+    <link rel="stylesheet" href="game.css?v=73">
 </head>
 <body class="phase-boot">
-    <div id="appShell">
     <div id="gameLayer">
         <!-- [JUDGE] Hidden 3D canvas layer — trivia uses HTML UI on top; engine is optional -->
         <canvas id="gameCanvas"></canvas>
@@ -84,6 +83,8 @@
         <!-- [JUDGE] HOME PAGE / HUB — Rank, XP bar, coins, START QUIZ, upgrades, leaderboard -->
         <section id="hubScreen" class="view view-hub hidden">
             <div class="hub-shell">
+                <p class="hub-page-label">🏠 HOME PAGE</p>
+                <h1 class="hub-brand">JOURNEY THROUGH THE 80s</h1>
                 <div class="hub-player-bar">
                     <span class="hub-playing-as">Playing as <strong id="hubPlayerName">—</strong></span>
                     <button type="button" class="arcade-btn arcade-btn-ghost hub-switch-btn" id="btnSwitchPlayer">SWITCH PLAYER</button>
@@ -402,7 +403,6 @@
             <p id="levelUpNum" class="level-up-num">LV 2</p>
             <p id="levelUpTokens" class="level-up-reward">+15 🪙 COINS</p>
         </div>
-    </div>
     </div>
 
     <!-- [JUDGE] SCRIPTS — Load order matters: data first, main.js last starts the game -->
