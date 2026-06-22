@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Through the 1980s</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="game.css?v=61">
+</head>
+<body class="phase-boot">
+    <div id="gameLayer">
+        <!-- [JUDGE] Hidden 3D canvas layer — trivia uses HTML UI on top; engine is optional -->
+        <canvas id="gameCanvas"></canvas>
+        <canvas id="fxCanvas" aria-hidden="true"></canvas>
+    </div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div id="screenFlash"></div>
+    <div id="shakeRoot">
+
+        <!-- [JUDGE] BOOT — First screen; js/ui.js boot() animates the loading bar -->
+        <section id="bootScreen" class="view view-boot">
+            <div class="parallax parallax-back"></div>
+            <div class="parallax parallax-mid"></div>
+            <div class="neon-grid-floor"></div>
+            <div class="boot-content">
+                <p class="boot-stamp">TIME WARP INITIATED · 1980–1989</p>
+                <h1 class="logo-main">JOURNEY<br><span>THROUGH THE 80s</span></h1>
+                <p class="logo-sub">TRIVIA · ADVENTURE · NEON DECADE</p>
+                <div class="boot-bar"><div id="bootProgress" class="boot-bar-fill"></div></div>
+                <p id="bootStatus" class="boot-status">LOADING DECADE DATA…</p>
+            </div>
+        </section>
+
+        <!-- [JUDGE] PLAYER LOGIN — js/profiles.js stores each player in localStorage -->
+        <section id="loginScreen" class="view view-login hidden">
+            <div class="login-shell">
+                <p class="login-badge">👤 PLAYER LOGIN</p>
+                <h1 class="login-title">WHO'S PLAYING?</h1>
+                <p class="login-sub">Everyone gets their own saved progress on this device</p>
+                <div id="playerList" class="player-list"></div>
+                <div class="login-create">
+                    <h3 class="login-create-title">NEW PLAYER</h3>
+                    <div class="login-form">
+                        <input type="text" id="newPlayerName" class="login-input" maxlength="18" placeholder="Your name…" autocomplete="off" />
+                        <input type="password" id="newPlayerPin" class="login-input login-pin" maxlength="4" inputmode="numeric" placeholder="PIN (optional, 4 digits)" autocomplete="new-password" />
+                        <button type="button" class="arcade-btn arcade-btn-lg" id="btnCreatePlayer">CREATE & PLAY</button>
+                    </div>
+                </div>
+                <p id="loginError" class="login-error hidden"></p>
+            </div>
+        </section>
+
+        <!-- [JUDGE] DELETE ACCOUNT — Removes profile + all saved XP/coins (js/profiles.js) -->
+        <section id="deleteAccountModal" class="view view-modal hidden">
+            <div class="modal-panel delete-panel">
+                <h2>DELETE ACCOUNT</h2>
+                <p id="deleteAccountMsg" class="delete-msg">This cannot be undone.</p>
+                <input type="password" id="deleteConfirmPin" class="login-input login-pin hidden" maxlength="4" inputmode="numeric" placeholder="Enter PIN to confirm" autocomplete="off" />
+                <p id="deleteError" class="login-error hidden"></p>
+                <div class="pin-actions">
+                    <button type="button" class="arcade-btn delete-btn" id="btnDeleteConfirm">DELETE FOREVER</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnDeleteCancel">CANCEL</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- [JUDGE] PIN MODAL — Optional 4-digit lock so only that player can load their save -->
+        <section id="pinModal" class="view view-modal hidden">
+            <div class="modal-panel pin-panel">
+                <h2 id="pinModalTitle">ENTER PIN</h2>
+                <p class="modal-sub" id="pinModalSub">Unlock your save</p>
+                <input type="password" id="pinInput" class="login-input login-pin" maxlength="4" inputmode="numeric" placeholder="••••" autocomplete="off" />
+                <p id="pinError" class="login-error hidden"></p>
+                <div class="pin-actions">
+                    <button type="button" class="arcade-btn" id="btnPinConfirm">PLAY</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnPinCancel">CANCEL</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- [JUDGE] HOME PAGE / HUB — Rank, XP bar, coins, START QUIZ, upgrades, leaderboard -->
+        <section id="hubScreen" class="view view-hub hidden">
+            <div class="hub-shell">
+                <p class="hub-page-label">🏠 HOME PAGE</p>
+                <h1 class="hub-brand">JOURNEY THROUGH THE 80s</h1>
+                <div class="hub-player-bar">
+                    <span class="hub-playing-as">Playing as <strong id="hubPlayerName">—</strong></span>
+                    <button type="button" class="arcade-btn arcade-btn-ghost hub-switch-btn" id="btnSwitchPlayer">SWITCH PLAYER</button>
+                </div>
+                <header class="hub-header">
+                    <div class="hub-rank">
+                        <span class="hub-rank-label">RANK</span>
+                        <span id="hubRank" class="hub-rank-value">TIME TOURIST</span>
+                        <div class="xp-track"><div id="hubXpFill" class="xp-fill"></div></div>
+                        <span id="hubLevel" class="hub-level">LV 1</span>
+                    </div>
+                    <div class="hub-currencies">
+                        <div class="hub-coins-big" aria-label="Coins">
+                            <span class="hub-coins-icon" aria-hidden="true">🪙</span>
+                            <span class="hub-coins-value" id="hubTokens">0</span>
+                            <span class="hub-coins-label">COINS</span>
+                        </div>
+                    </div>
+                </header>
+                <h2 class="hub-title">1980s TIME TRAVEL TRIVIA</h2>
+                <p class="hub-sub" id="hubQuizSub">90 questions per run · Easy → Medium → Hard · +25 / −10 · +50 XP · 3 ♥</p>
+                <div class="hub-start-wrap">
+                    <button type="button" class="hub-resume-btn hidden" id="btnResumeJourney">▶ RESUME QUIZ</button>
+                    <p class="hub-resume-hint hidden" id="hubResumeHint">Pick up where you left off</p>
+                    <button type="button" class="hub-start-btn" id="btnStartJourney">▶ START QUIZ</button>
+                    <p class="hub-start-hint">Questions play in order — no category pick · gets harder as you go</p>
+                </div>
+                <div class="hub-actions">
+                    <button type="button" class="arcade-btn" id="btnUpgrades">UPGRADES</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnLeaderboard">LEADERBOARD</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnAchievements">TROPHIES</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnHowPlay">HOW TO PLAY</button>
+                </div>
+                <div class="hub-danger-zone">
+                    <p class="danger-label">ACCOUNT</p>
+                    <button type="button" class="danger-btn" id="btnDeleteMyAccount">🗑 DELETE MY ACCOUNT</button>
+                    <p class="danger-hint">Removes your profile and all saved progress from this device</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- [JUDGE] LEADERBOARD — Ranks all player accounts on this device by best score -->
+        <section id="leaderboardScreen" class="view view-modal hidden">
+            <div class="modal-panel modal-panel-xl modal-panel-landscape lb-modal">
+                <div class="modal-landscape-head">
+                    <h2>🏆 LEADERBOARD</h2>
+                    <p class="modal-sub">Everyone on this device — ranked by best quiz score</p>
+                </div>
+                <div class="lb-table-wrap">
+                    <div class="lb-table-head" aria-hidden="true">
+                        <span>RANK</span>
+                        <span>PLAYER</span>
+                        <span>BEST</span>
+                        <span>STATS</span>
+                    </div>
+                    <div id="leaderboardList" class="leaderboard-list leaderboard-list-landscape"></div>
+                </div>
+                <button type="button" class="arcade-btn arcade-btn-lg modal-landscape-btn" id="btnCloseLeaderboard">BACK</button>
+            </div>
+        </section>
+
+        <!-- [JUDGE] HELP — Rules that match the real quiz -->
+        <section id="helpModal" class="view view-modal view-modal-help hidden">
+            <div class="modal-panel help-modal help-modal-fullscreen">
+                <div class="modal-landscape-head">
+                    <h2>HOW TO PLAY</h2>
+                    <p class="modal-sub">90 questions · Level 1 Easy (30) → Level 2 Medium (30) → Level 3 Hard (30)</p>
+                </div>
+                <div class="help-grid">
+                    <div class="help-card">
+                        <h3 class="help-card-title">▶ THE QUIZ</h3>
+                        <ul class="help-card-list">
+                            <li>Tap <strong>START QUIZ</strong> — full run is <strong>90 questions</strong></li>
+                            <li><strong>Level 1 · Easy</strong> — first <strong>30</strong> easy 1980s questions (in order)</li>
+                            <li><strong>Level 2 · Medium</strong> — next <strong>30</strong> medium questions</li>
+                            <li><strong>Level 3 · Hard</strong> — last <strong>30</strong> hard questions</li>
+                            <li><strong>15 seconds</strong> each (Time Boost upgrade adds more)</li>
+                            <li>Tap a card or press <strong>1–4</strong> on your keyboard</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">📊 SCORING</h3>
+                        <ul class="help-card-list">
+                            <li><strong>+25</strong> points per correct answer</li>
+                            <li><strong>−10</strong> points per wrong answer</li>
+                            <li><strong>+50 XP</strong> per correct answer (XP upgrades boost this)</li>
+                            <li>Finish Easy or Medium with a <strong>negative score</strong> → level fails, run ends</li>
+                            <li>Need <strong>0+ points</strong> at the end of each tier to keep going</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">⭐ XP & LEVELS</h3>
+                        <ul class="help-card-list">
+                            <li>Earn <strong>+50 XP</strong> every time you get a question right</li>
+                            <li><strong>400 XP</strong> fills your profile bar — then you <strong>level up</strong></li>
+                            <li>Level up → <strong>+15 🪙</strong> coins added to your wallet</li>
+                            <li>XP saves to your profile — keeps growing across quiz runs</li>
+                            <li>Buy the <strong>XP Boost</strong> upgrade in the shop for bonus XP</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">♥ LIVES</h3>
+                        <ul class="help-card-list">
+                            <li>Start with <strong>3 hearts</strong> — hit <strong>0</strong> and it's game over</li>
+                            <li>Wrong answer → <strong>−1 ♥</strong></li>
+                            <li>Earn <strong>+1 ♥</strong> for a perfect level (all correct in Easy, Medium, or Hard)</li>
+                            <li>Earn <strong>+1 ♥</strong> by winning the bonus mini-game</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">⚡ 50/50 LIFELINE</h3>
+                        <ul class="help-card-list">
+                            <li>Need <strong>2+ hearts</strong> — tap <strong>USE LIFELINE</strong> at the top</li>
+                            <li>Costs <strong>1 ♥</strong> · removes <strong>2 wrong answers</strong></li>
+                            <li>You get <strong>10 seconds</strong> to pick from the 2 left</li>
+                            <li>One lifeline per question</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">🎮 BONUS CHALLENGE</h3>
+                        <ul class="help-card-list">
+                            <li>After a <strong>correct</strong> answer, tap <strong>BONUS CHALLENGE</strong></li>
+                            <li>Random mini-game (Reaction, Memory, Pac-Man, etc.)</li>
+                            <li>Win → <strong>+1 ♥</strong> · lose → no penalty, keep playing</li>
+                        </ul>
+                    </div>
+                    <div class="help-card">
+                        <h3 class="help-card-title">🪙 COINS & SHOP</h3>
+                        <ul class="help-card-list">
+                            <li>Earn <strong>+30 🪙</strong> for finishing each quiz level (Easy, Medium, Hard)</li>
+                            <li>Earn <strong>+15 🪙</strong> each time your profile levels up from XP</li>
+                            <li>Spend coins on <strong>UPGRADES</strong> (time, coin boost, eliminator, lucky save, XP)</li>
+                            <li>Check <strong>TROPHIES</strong> for 8 unlockable achievements</li>
+                            <li><strong>LEADERBOARD</strong> ranks every profile on this device</li>
+                        </ul>
+                    </div>
+                </div>
+                <button type="button" class="arcade-btn arcade-btn-lg modal-landscape-btn" id="btnCloseHelp">GOT IT</button>
+            </div>
+        </section>
+
+        <section id="upgradeScreen" class="view view-modal hidden">
+            <div class="modal-panel modal-panel-xl">
+                <h2>⚡ UPGRADES</h2>
+                <p class="modal-sub">Spend tokens for permanent power-ups · <span id="upgradeTokens">🪙 0</span></p>
+                <div id="upgradeList" class="skill-list upgrade-list"></div>
+                <button type="button" class="arcade-btn arcade-btn-lg" id="btnCloseUpgrades">BACK</button>
+            </div>
+        </section>
+
+        <section id="achieveScreen" class="view view-modal hidden">
+            <div class="modal-panel modal-panel-xl">
+                <h2>🏆 TROPHY CASE</h2>
+                <p class="modal-sub">8 simple trophies — unlock them as you play the quiz</p>
+                <div id="achieveList" class="achieve-list"></div>
+                <button type="button" class="arcade-btn arcade-btn-lg" id="btnCloseAchieve">BACK</button>
+            </div>
+        </section>
+
+        <!-- [JUDGE] WARP — Transition animation; js/ui.js showWarp() before quiz starts -->
+        <section id="warpScreen" class="view view-warp hidden">
+            <div class="warp-tunnel"></div>
+            <p class="warp-year" id="warpYear">1980</p>
+            <p class="warp-world" id="warpTitle">MIRACLE ON ICE</p>
+            <p class="warp-tip" id="warpTip">Entering the decade…</p>
+        </section>
+
+        <!-- LEVEL ADVANCE — Shown when unlocking Level 2 (Medium) or Level 3 (Hard) -->
+        <section id="levelAdvanceScreen" class="view view-level-advance hidden" aria-live="polite">
+            <div class="level-advance-burst"></div>
+            <p id="levelAdvanceMsg" class="level-advance-msg">YOU ARE NOW ADVANCING TO</p>
+            <p id="levelAdvanceNum" class="level-advance-num">LEVEL 2</p>
+            <p id="levelAdvanceLabel" class="level-advance-label">MEDIUM DIFFICULTY</p>
+            <p id="levelAdvanceTip" class="level-advance-tip">Get ready — questions get tougher!</p>
+        </section>
+
+        <!-- SYNTHWAVE PLAY BACKDROP (hides 3D canvas bleed) -->
+        <div id="playBackdrop" class="play-backdrop hidden" aria-hidden="true">
+            <div class="pb-sky"></div>
+            <div class="pb-sun"></div>
+            <div class="pb-mountains"></div>
+            <div class="pb-grid"></div>
+            <div class="pb-scan"></div>
+        </div>
+
+        <!-- [JUDGE] STATUS DOCK — Always on during play: points, hearts, timer progress, HUB button -->
+        <header id="statusDock" class="status-dock hidden" aria-label="Game status">
+            <div class="dock-seg dock-meta">
+                <span id="hudStopLabel" class="dock-q">Q 1/10</span>
+                <span id="dockLevel" class="dock-level">LEVEL 1 · EASY</span>
+                <span id="dockLevelSub" class="dock-level-sub">Easy difficulty</span>
+                <span id="hudTime" class="dock-run-time">0:00</span>
+            </div>
+            <div class="dock-center">
+                <div class="dock-stat">
+                    <span class="dock-k">POINTS</span>
+                    <span id="hudScore" class="dock-points score-pop">0</span>
+                </div>
+                <div class="dock-divider" aria-hidden="true"></div>
+                <div class="dock-stat">
+                    <span class="dock-k">LIVES</span>
+                    <div class="dock-lives-wrap">
+                        <div id="heartsDisplay" class="hearts-display"></div>
+                        <span id="heartsCount" class="hearts-count" aria-hidden="true">×3</span>
+                    </div>
+                    <span id="hudHearts" class="sr-only">hearts</span>
+                </div>
+            </div>
+            <div class="dock-seg dock-meta dock-right">
+                <button type="button" class="dock-hub-btn" id="btnHubDuringPlay" title="Return to hub for upgrades">🏠 HUB</button>
+                <span id="hudPlayerName" class="dock-player">—</span>
+                <span id="hudStreak" class="dock-time">STREAK ×0</span>
+            </div>
+            <div class="dock-track"><div id="journeyProgress" class="journey-fill"></div></div>
+            <button type="button" id="btnUseLifeline" class="dock-lifeline-btn hidden" title="Costs 1 heart — removes 2 wrong answers, 10 seconds to guess">
+                ⚡ USE LIFELINE — 50/50 · −1 ♥ · 10 SEC
+            </button>
+        </header>
+        <div id="playHud" class="play-hud hidden" aria-hidden="true"></div>
+
+        <!-- [JUDGE] TRIVIA SCREEN — Question + 4 cards; images from js/cueArt.js (Wikipedia) -->
+        <section id="triviaScreen" class="view trivia-screen hidden">
+            <div class="arcade-cabinet">
+                <div class="trivia-panel">
+                    <div class="trivia-timer-wrap">
+                        <div id="triviaTimerRing" class="trivia-timer-ring"><span id="triviaTimerNum">15</span></div>
+                    </div>
+                    <div class="trivia-q-frame">
+                        <p id="triviaQuestion" class="trivia-question">Question appears here…</p>
+                    </div>
+                <div class="trivia-cards">
+                    <button type="button" class="trivia-card a" id="triviaCard0" data-idx="0">
+                        <div class="tc-img-wrap"><img class="tc-img" alt="" /><span class="tc-letter">A</span></div>
+                        <span class="tc-text">Answer A</span>
+                    </button>
+                    <button type="button" class="trivia-card b" id="triviaCard1" data-idx="1">
+                        <div class="tc-img-wrap"><img class="tc-img" alt="" /><span class="tc-letter">B</span></div>
+                        <span class="tc-text">Answer B</span>
+                    </button>
+                    <button type="button" class="trivia-card c" id="triviaCard2" data-idx="2">
+                        <div class="tc-img-wrap"><img class="tc-img" alt="" /><span class="tc-letter">C</span></div>
+                        <span class="tc-text">Answer C</span>
+                    </button>
+                    <button type="button" class="trivia-card d" id="triviaCard3" data-idx="3">
+                        <div class="tc-img-wrap"><img class="tc-img" alt="" /><span class="tc-letter">D</span></div>
+                        <span class="tc-text">Answer D</span>
+                    </button>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- [JUDGE] TRIVIA RESULT — Shows correct/wrong, explanation, lifeline or next question -->
+        <section id="triviaResult" class="view trivia-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+            <div class="result-bg"></div>
+            <div class="result-panel arcade-result result-panel-full">
+                <p id="resultGoBanner" class="result-go-banner hidden">💔 OUT OF LIVES</p>
+                <h2 id="resultTitle" class="result-title">CORRECT!</h2>
+                <p id="resultPoints" class="result-points">+120 PTS</p>
+                <p id="resultTotalScore" class="result-total-score">Total: 0 pts</p>
+                <p id="resultStreak" class="result-streak hidden">STREAK ×3</p>
+                <p id="resultExplain" class="result-explain"></p>
+                <p id="resultAnswer" class="result-ans"></p>
+                <p id="resultLifelineHint" class="result-lifeline-hint hidden">Bonus challenge — win for +1 ♥</p>
+                <div class="result-actions">
+                    <button type="button" class="arcade-btn arcade-btn-lifeline" id="btnLifelineGame">🎮 BONUS CHALLENGE — WIN +1 ♥</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost" id="btnContinue">NEXT QUESTION</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost hidden" id="btnGameOverRetry">🔄 TRY AGAIN</button>
+                    <button type="button" class="arcade-btn hidden" id="btnGameOverHub">RETURN TO HUB</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- [JUDGE] MINI-GAME — Optional bonus after correct answer; js/minigames.js picks 1 of 10 games -->
+        <section id="minigameScreen" class="view minigame-screen hidden">
+            <div class="mg-panel arcade-mg">
+                <h2 id="mgTitle" class="mg-title">LIFELINE CHALLENGE</h2>
+                <p id="mgHint" class="mg-hint">Win for +1 ♥ heart!</p>
+                <p id="mgTimer" class="mg-timer">—</p>
+                <div id="mgArea" class="mg-area"></div>
+            </div>
+        </section>
+
+        <!-- LIFELINE PROMPT -->
+        <div id="lifelinePrompt" class="lifeline-prompt hidden">
+            <span id="lifelineYear">1984 · LA Olympics</span>
+            <span id="lifelineTip">Reach the finish!</span>
+        </div>
+
+        <!-- [JUDGE] VICTORY — Full-screen end-of-run summary; js/main.js journeyComplete() fills stats -->
+        <section id="victoryScreen" class="view view-victory hidden" role="dialog" aria-modal="true" aria-labelledby="victoryTitle">
+            <div class="victory-bg"></div>
+            <div class="victory-burst"></div>
+            <button type="button" class="victory-hub-corner" id="btnVictoryHubTop">🏠 RETURN TO HUB</button>
+            <div class="victory-shell">
+                <h2 id="victoryTitle" class="victory-title">DECADE COMPLETE!</h2>
+                <div id="victoryStats" class="victory-stats"></div>
+                <div id="lootReveal" class="loot-reveal"></div>
+                <div class="victory-actions">
+                    <button type="button" class="arcade-btn arcade-btn-lg" id="btnVictoryHub">RETURN TO HUB</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost arcade-btn-lg" id="btnVictoryRetry">NEW JOURNEY</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="achievementToast" class="achievement-toast hidden">
+            <span class="at-icon">🏆</span>
+            <div><strong id="atTitle">Achievement</strong><p id="atDesc"></p></div>
+        </div>
+        <div id="floatScore" class="float-score hidden"></div>
+
+        <!-- [JUDGE] LEVEL UP OVERLAY — Gimkit-style popup; +15 coins per level (js/data.js addXp) -->
+        <div id="levelUpOverlay" class="level-up-overlay hidden" aria-live="polite">
+            <div class="level-up-burst"></div>
+            <p class="level-up-label">LEVEL UP!</p>
+            <p id="levelUpNum" class="level-up-num">LV 2</p>
+            <p id="levelUpTokens" class="level-up-reward">+15 🪙 COINS</p>
+        </div>
+    </div>
+
+    <!-- [JUDGE] SCRIPTS — Load order matters: data first, main.js last starts the game -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/data.js?v=63"></script>
+    <script src="js/answerImageData.js?v=62"></script>
+    <script src="js/profiles.js?v=49"></script>
+    <script src="js/cueArt.js?v=62"></script>
+    <script src="js/fx.js?v=32"></script>
+    <script src="js/minigames.js?v=62"></script>
+    <script src="js/worlds.js?v=32"></script>
+    <script src="js/engine.js?v=45"></script>
+    <script src="js/ui.js?v=63"></script>
+    <script src="js/main.js?v=54"></script>
+</body>
+</html>

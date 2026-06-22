@@ -1,0 +1,1773 @@
+{
+  "version": 4,
+  "gameTitle": "1980s Time Travel Trivia Quiz",
+  "description": "110 questions in increasing difficulty — easy, medium, and hard",
+  "judgeNotes": "Each question has: question text, 4 answers, correctIndex (0=A,1=B,2=C,3=D), difficulty, order. Loaded by main.js into AN.bank.",
+  "categories": [
+    "Sports",
+    "Historical Events",
+    "Technology"
+  ],
+  "questions": [
+    {
+      "id": "Q001",
+      "order": 1,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which U.S. president served during most of the 1980s?",
+      "answers": [
+        "Jimmy Carter",
+        "Ronald Reagan",
+        "Bill Clinton",
+        "Gerald Ford"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Ronald Reagan"
+    },
+    {
+      "id": "Q002",
+      "order": 2,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What decade is known as the 1980s?",
+      "answers": [
+        "1960–1969",
+        "1970–1979",
+        "1980–1989",
+        "1990–1999"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: 1980–1989"
+    },
+    {
+      "id": "Q003",
+      "order": 3,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which arcade game featured a yellow character eating dots?",
+      "answers": [
+        "Donkey Kong",
+        "Space Invaders",
+        "Pac-Man",
+        "Frogger"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Pac-Man"
+    },
+    {
+      "id": "Q004",
+      "order": 4,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company introduced the Macintosh computer in 1984?",
+      "answers": [
+        "IBM",
+        "Microsoft",
+        "Apple",
+        "Intel"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Apple"
+    },
+    {
+      "id": "Q005",
+      "order": 5,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country hosted the 1984 Summer Olympics?",
+      "answers": [
+        "Canada",
+        "United States",
+        "Mexico",
+        "Soviet Union"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: United States"
+    },
+    {
+      "id": "Q006",
+      "order": 6,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What was the name of the first Space Shuttle launched in 1981?",
+      "answers": [
+        "Columbia",
+        "Challenger",
+        "Discovery",
+        "Atlantis"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Columbia"
+    },
+    {
+      "id": "Q007",
+      "order": 7,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which famous wall divided Germany during the Cold War?",
+      "answers": [
+        "Great Wall",
+        "Iron Curtain",
+        "Berlin Wall",
+        "Freedom Wall"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Berlin Wall"
+    },
+    {
+      "id": "Q008",
+      "order": 8,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which toy transformed from vehicles into robots?",
+      "answers": [
+        "Care Bears",
+        "Transformers",
+        "My Little Pony",
+        "Cabbage Patch Kids"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Transformers"
+    },
+    {
+      "id": "Q009",
+      "order": 9,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company created the Nintendo Entertainment System (NES)?",
+      "answers": [
+        "Sega",
+        "Atari",
+        "Nintendo",
+        "Sony"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Nintendo"
+    },
+    {
+      "id": "Q010",
+      "order": 10,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country was America's main Cold War rival during the 1980s?",
+      "answers": [
+        "China",
+        "Cuba",
+        "Soviet Union",
+        "France"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q011",
+      "order": 11,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which basketball superstar played for the Chicago Bulls?",
+      "answers": [
+        "Larry Bird",
+        "Magic Johnson",
+        "Michael Jordan",
+        "Charles Barkley"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Michael Jordan"
+    },
+    {
+      "id": "Q012",
+      "order": 12,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What natural disaster erupted in Washington State in 1980?",
+      "answers": [
+        "Earthquake",
+        "Hurricane",
+        "Mount St. Helens Volcano",
+        "Tsunami"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Mount St. Helens Volcano"
+    },
+    {
+      "id": "Q013",
+      "order": 13,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What was the world's worst nuclear power plant accident in 1986?",
+      "answers": [
+        "Fukushima",
+        "Three Mile Island",
+        "Chernobyl",
+        "Windscale"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Chernobyl"
+    },
+    {
+      "id": "Q014",
+      "order": 14,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company developed MS-DOS?",
+      "answers": [
+        "Apple",
+        "Microsoft",
+        "IBM",
+        "Intel"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Microsoft"
+    },
+    {
+      "id": "Q015",
+      "order": 15,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which boxer became the youngest heavyweight champion in history in 1986?",
+      "answers": [
+        "Muhammad Ali",
+        "Mike Tyson",
+        "Joe Frazier",
+        "George Foreman"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Mike Tyson"
+    },
+    {
+      "id": "Q016",
+      "order": 16,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which portable music player became extremely popular in the 1980s?",
+      "answers": [
+        "iPod",
+        "Walkman",
+        "Zune",
+        "Discman"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Walkman"
+    },
+    {
+      "id": "Q017",
+      "order": 17,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which British Prime Minister served most of the 1980s?",
+      "answers": [
+        "Theresa May",
+        "Margaret Thatcher",
+        "Liz Truss",
+        "Tony Blair"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Margaret Thatcher"
+    },
+    {
+      "id": "Q018",
+      "order": 18,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What does IBM stand for?",
+      "answers": [
+        "International Business Machines",
+        "Internet Business Machines",
+        "International Binary Machines",
+        "Integrated Business Machines"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: International Business Machines"
+    },
+    {
+      "id": "Q019",
+      "order": 19,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which baseball player became MLB's all-time hit leader in 1985?",
+      "answers": [
+        "Pete Rose",
+        "Hank Aaron",
+        "Cal Ripken Jr.",
+        "Nolan Ryan"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Pete Rose"
+    },
+    {
+      "id": "Q020",
+      "order": 20,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What was the capital of the Soviet Union?",
+      "answers": [
+        "Kiev",
+        "Moscow",
+        "Minsk",
+        "Warsaw"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Moscow"
+    },
+    {
+      "id": "Q021",
+      "order": 21,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company released Windows 1.0 in 1985?",
+      "answers": [
+        "Apple",
+        "Microsoft",
+        "IBM",
+        "Oracle"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Microsoft"
+    },
+    {
+      "id": "Q022",
+      "order": 22,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which athlete won four gold medals at the 1984 Olympics?",
+      "answers": [
+        "Carl Lewis",
+        "Bruce Jenner",
+        "Edwin Moses",
+        "Greg Louganis"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Carl Lewis"
+    },
+    {
+      "id": "Q023",
+      "order": 23,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country invaded Afghanistan in 1979 and remained there through much of the 1980s?",
+      "answers": [
+        "China",
+        "United States",
+        "Soviet Union",
+        "India"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q024",
+      "order": 24,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which famous entrepreneur co-founded Apple?",
+      "answers": [
+        "Bill Gates",
+        "Steve Jobs",
+        "Steve Ballmer",
+        "Larry Ellison"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Steve Jobs"
+    },
+    {
+      "id": "Q025",
+      "order": 25,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which NFL team won Super Bowl XX after recording one of the greatest seasons in league history?",
+      "answers": [
+        "San Francisco 49ers",
+        "Chicago Bears",
+        "Dallas Cowboys",
+        "Miami Dolphins"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Chicago Bears"
+    },
+    {
+      "id": "Q026",
+      "order": 26,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which volcano erupted in Washington State in 1980?",
+      "answers": [
+        "Mount Rainier",
+        "Mount Hood",
+        "Mount St. Helens",
+        "Mount Shasta"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Mount St. Helens"
+    },
+    {
+      "id": "Q027",
+      "order": 27,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which Soviet leader introduced Glasnost and Perestroika?",
+      "answers": [
+        "Leonid Brezhnev",
+        "Yuri Andropov",
+        "Mikhail Gorbachev",
+        "Boris Yeltsin"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Mikhail Gorbachev"
+    },
+    {
+      "id": "Q028",
+      "order": 28,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company produced the Commodore 64 computer?",
+      "answers": [
+        "Atari",
+        "Commodore",
+        "Apple",
+        "IBM"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Commodore"
+    },
+    {
+      "id": "Q029",
+      "order": 29,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country boycotted the 1984 Los Angeles Olympics?",
+      "answers": [
+        "Canada",
+        "France",
+        "Soviet Union",
+        "Japan"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q030",
+      "order": 30,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which hockey player was nicknamed \"The Great One\"?",
+      "answers": [
+        "Mario Lemieux",
+        "Wayne Gretzky",
+        "Mark Messier",
+        "Bobby Orr"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Wayne Gretzky"
+    },
+    {
+      "id": "Q031",
+      "order": 31,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country launched the Mir Space Station in 1986?",
+      "answers": [
+        "United States",
+        "China",
+        "Soviet Union",
+        "France"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q032",
+      "order": 32,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which U.S. president succeeded Ronald Reagan?",
+      "answers": [
+        "Jimmy Carter",
+        "George H.W. Bush",
+        "Bill Clinton",
+        "Gerald Ford"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: George H.W. Bush"
+    },
+    {
+      "id": "Q033",
+      "order": 33,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which chess player became World Champion in 1985 after defeating Anatoly Karpov?",
+      "answers": [
+        "Bobby Fischer",
+        "Garry Kasparov",
+        "Magnus Carlsen",
+        "Viswanathan Anand"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Garry Kasparov"
+    },
+    {
+      "id": "Q034",
+      "order": 34,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which space shuttle exploded shortly after launch in 1986?",
+      "answers": [
+        "Columbia",
+        "Discovery",
+        "Challenger",
+        "Atlantis"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Challenger"
+    },
+    {
+      "id": "Q035",
+      "order": 35,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which military alliance included the United States during the Cold War?",
+      "answers": [
+        "Warsaw Pact",
+        "NATO",
+        "COMECON",
+        "ASEAN"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: NATO"
+    },
+    {
+      "id": "Q036",
+      "order": 36,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which nation won the 1986 FIFA World Cup?",
+      "answers": [
+        "Brazil",
+        "Germany",
+        "Argentina",
+        "Italy"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Argentina"
+    },
+    {
+      "id": "Q037",
+      "order": 37,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which soccer star scored the famous \"Hand of God\" goal?",
+      "answers": [
+        "Pelé",
+        "Diego Maradona",
+        "Lionel Messi",
+        "Zico"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Diego Maradona"
+    },
+    {
+      "id": "Q038",
+      "order": 38,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company introduced the first version of Excel in 1985?",
+      "answers": [
+        "Lotus",
+        "Microsoft",
+        "IBM",
+        "Apple"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Microsoft"
+    },
+    {
+      "id": "Q039",
+      "order": 39,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which famous anti-apartheid leader remained imprisoned through most of the 1980s?",
+      "answers": [
+        "Nelson Mandela",
+        "Desmond Tutu",
+        "F.W. de Klerk",
+        "Thabo Mbeki"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Nelson Mandela"
+    },
+    {
+      "id": "Q040",
+      "order": 40,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which stock market crash occurred on October 19, 1987?",
+      "answers": [
+        "Great Crash",
+        "Black Monday",
+        "Black Tuesday",
+        "Silver Thursday"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Black Monday"
+    },
+    {
+      "id": "Q041",
+      "order": 41,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "What was the name of the U.S. missile defense proposal announced by Reagan in 1983?",
+      "answers": [
+        "Freedom Shield",
+        "Strategic Defense Initiative",
+        "Eagle Program",
+        "Patriot Initiative"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Strategic Defense Initiative"
+    },
+    {
+      "id": "Q042",
+      "order": 42,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which computer company was founded by Steve Jobs after leaving Apple in 1985?",
+      "answers": [
+        "Oracle",
+        "NeXT",
+        "Sun Microsystems",
+        "Dell"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: NeXT"
+    },
+    {
+      "id": "Q043",
+      "order": 43,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which country hosted the 1988 Summer Olympics?",
+      "answers": [
+        "Japan",
+        "South Korea",
+        "China",
+        "Australia"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: South Korea"
+    },
+    {
+      "id": "Q044",
+      "order": 44,
+      "category": "Sports",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which athlete was stripped of his 1988 Olympic gold medal after a doping scandal?",
+      "answers": [
+        "Carl Lewis",
+        "Ben Johnson",
+        "Linford Christie",
+        "Edwin Moses"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Ben Johnson"
+    },
+    {
+      "id": "Q045",
+      "order": 45,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company released the Game Boy in 1989?",
+      "answers": [
+        "Sega",
+        "Nintendo",
+        "Atari",
+        "Sony"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Nintendo"
+    },
+    {
+      "id": "Q046",
+      "order": 46,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which spacecraft made the first flyby of Uranus in 1986?",
+      "answers": [
+        "Voyager 2",
+        "Voyager 1",
+        "Pioneer 10",
+        "Galileo"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Voyager 2"
+    },
+    {
+      "id": "Q047",
+      "order": 47,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which leader became Pope in 1978 and remained Pope throughout the 1980s?",
+      "answers": [
+        "Paul VI",
+        "John Paul II",
+        "Benedict XVI",
+        "Francis"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: John Paul II"
+    },
+    {
+      "id": "Q048",
+      "order": 48,
+      "category": "Technology",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which company introduced the first Macintosh computer?",
+      "answers": [
+        "IBM",
+        "Microsoft",
+        "Apple",
+        "Commodore"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Apple"
+    },
+    {
+      "id": "Q049",
+      "order": 49,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which Cold War barrier fell in 1989?",
+      "answers": [
+        "Iron Curtain",
+        "Berlin Wall",
+        "Great Wall",
+        "Maginot Line"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Berlin Wall"
+    },
+    {
+      "id": "Q050",
+      "order": 50,
+      "category": "Historical Events",
+      "difficulty": "easy",
+      "points": 100,
+      "question": "Which Soviet leader was in power when the Berlin Wall fell?",
+      "answers": [
+        "Brezhnev",
+        "Andropov",
+        "Gorbachev",
+        "Khrushchev"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Gorbachev"
+    },
+    {
+      "id": "Q051",
+      "order": 51,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which scandal involved secret U.S. arms sales to Iran?",
+      "answers": [
+        "Watergate",
+        "Iran-Contra Affair",
+        "Pentagon Papers",
+        "Whitewater"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Iran-Contra Affair"
+    },
+    {
+      "id": "Q052",
+      "order": 52,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "What year did the Berlin Wall fall?",
+      "answers": [
+        "1987",
+        "1988",
+        "1989",
+        "1990"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: 1989"
+    },
+    {
+      "id": "Q053",
+      "order": 53,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which company created the first widely successful graphical user interface computer?",
+      "answers": [
+        "Apple",
+        "Microsoft",
+        "IBM",
+        "Atari"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Apple"
+    },
+    {
+      "id": "Q054",
+      "order": 54,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which country fought the United Kingdom in the Falklands War?",
+      "answers": [
+        "Chile",
+        "Argentina",
+        "Brazil",
+        "Peru"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Argentina"
+    },
+    {
+      "id": "Q055",
+      "order": 55,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which British prime minister led the UK during the Falklands War?",
+      "answers": [
+        "Harold Wilson",
+        "Margaret Thatcher",
+        "John Major",
+        "Tony Blair"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Margaret Thatcher"
+    },
+    {
+      "id": "Q056",
+      "order": 56,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "What was the first reusable spacecraft program called?",
+      "answers": [
+        "Apollo",
+        "Gemini",
+        "Space Shuttle",
+        "Mercury"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Space Shuttle"
+    },
+    {
+      "id": "Q057",
+      "order": 57,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which company produced the Atari 2600?",
+      "answers": [
+        "Nintendo",
+        "Atari",
+        "Sega",
+        "Sony"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Atari"
+    },
+    {
+      "id": "Q058",
+      "order": 58,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which nation hosted the 1980 Summer Olympics?",
+      "answers": [
+        "United States",
+        "Soviet Union",
+        "Germany",
+        "Canada"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q059",
+      "order": 59,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which U.S. city hosted the 1984 Olympics?",
+      "answers": [
+        "New York",
+        "Chicago",
+        "Los Angeles",
+        "Atlanta"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Los Angeles"
+    },
+    {
+      "id": "Q060",
+      "order": 60,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which famous basketball rivalry defined much of the 1980s NBA?",
+      "answers": [
+        "Jordan vs Barkley",
+        "Bird vs Magic",
+        "Kobe vs Shaq",
+        "Duncan vs Garnett"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Bird vs Magic"
+    },
+    {
+      "id": "Q061",
+      "order": 61,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "What does \"Glasnost\" mean?",
+      "answers": [
+        "Secrecy",
+        "Openness",
+        "Reform",
+        "Unity"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Openness"
+    },
+    {
+      "id": "Q062",
+      "order": 62,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "What does \"Perestroika\" mean?",
+      "answers": [
+        "Openness",
+        "Restructuring",
+        "Democracy",
+        "Privatization"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Restructuring"
+    },
+    {
+      "id": "Q063",
+      "order": 63,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which Soviet republic became the largest independent state after the USSR dissolved?",
+      "answers": [
+        "Ukraine",
+        "Russia",
+        "Kazakhstan",
+        "Belarus"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Russia"
+    },
+    {
+      "id": "Q064",
+      "order": 64,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which company created the first version of PowerPoint in 1987?",
+      "answers": [
+        "Microsoft",
+        "Forethought",
+        "Lotus",
+        "Apple"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Forethought"
+    },
+    {
+      "id": "Q065",
+      "order": 65,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "What was the name of the Soviet nuclear plant involved in the 1986 disaster?",
+      "answers": [
+        "Three Mile Island",
+        "Chernobyl",
+        "Fukushima",
+        "Windscale"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Chernobyl"
+    },
+    {
+      "id": "Q066",
+      "order": 66,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which country occupied Afghanistan during much of the 1980s?",
+      "answers": [
+        "United States",
+        "Soviet Union",
+        "China",
+        "Pakistan"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q067",
+      "order": 67,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which nation hosted the 1988 Winter Olympics?",
+      "answers": [
+        "Norway",
+        "Canada",
+        "United States",
+        "France"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Canada"
+    },
+    {
+      "id": "Q068",
+      "order": 68,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which Canadian city hosted the 1988 Winter Olympics?",
+      "answers": [
+        "Toronto",
+        "Calgary",
+        "Vancouver",
+        "Montreal"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Calgary"
+    },
+    {
+      "id": "Q069",
+      "order": 69,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which athlete won Olympic gold in both 1984 and 1988 diving competitions?",
+      "answers": [
+        "Greg Louganis",
+        "Carl Lewis",
+        "Edwin Moses",
+        "Mary Lou Retton"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Greg Louganis"
+    },
+    {
+      "id": "Q070",
+      "order": 70,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which company launched the first commercial cellular network in the U.S.?",
+      "answers": [
+        "AT&T",
+        "Ameritech",
+        "Verizon",
+        "Motorola"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Ameritech"
+    },
+    {
+      "id": "Q071",
+      "order": 71,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which computer storage medium became common in the 1980s?",
+      "answers": [
+        "CD-ROM",
+        "Floppy Disk",
+        "USB Drive",
+        "Hard Drive"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Floppy Disk"
+    },
+    {
+      "id": "Q072",
+      "order": 72,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which company developed the Motorola DynaTAC phone?",
+      "answers": [
+        "IBM",
+        "Motorola",
+        "Nokia",
+        "Apple"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Motorola"
+    },
+    {
+      "id": "Q073",
+      "order": 73,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which world leader famously told Gorbachev to \"tear down this wall\"?",
+      "answers": [
+        "Margaret Thatcher",
+        "Ronald Reagan",
+        "Mikhail Gorbachev",
+        "John Paul II"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Ronald Reagan"
+    },
+    {
+      "id": "Q074",
+      "order": 74,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "In what city was Reagan's \"tear down this wall\" speech given?",
+      "answers": [
+        "Moscow",
+        "Berlin",
+        "Washington D.C.",
+        "London"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Berlin"
+    },
+    {
+      "id": "Q075",
+      "order": 75,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which nation reunified in 1990 after events of the 1980s?",
+      "answers": [
+        "Korea",
+        "Germany",
+        "Vietnam",
+        "Yemen"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Germany"
+    },
+    {
+      "id": "Q076",
+      "order": 76,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which treaty eliminated many intermediate-range nuclear missiles?",
+      "answers": [
+        "START I",
+        "INF Treaty",
+        "SALT I",
+        "SALT II"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: INF Treaty"
+    },
+    {
+      "id": "Q077",
+      "order": 77,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which Soviet leader immediately preceded Gorbachev?",
+      "answers": [
+        "Brezhnev",
+        "Andropov",
+        "Chernenko",
+        "Yeltsin"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Chernenko"
+    },
+    {
+      "id": "Q078",
+      "order": 78,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which nation launched the Giotto spacecraft to Halley's Comet?",
+      "answers": [
+        "USSR",
+        "USA",
+        "European Space Agency",
+        "Japan"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: European Space Agency"
+    },
+    {
+      "id": "Q079",
+      "order": 79,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which famous comet passed Earth in 1986?",
+      "answers": [
+        "Hale-Bopp",
+        "Encke",
+        "Halley's Comet",
+        "Hyakutake"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Halley's Comet"
+    },
+    {
+      "id": "Q080",
+      "order": 80,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which company developed the 80386 processor?",
+      "answers": [
+        "AMD",
+        "Intel",
+        "IBM",
+        "Motorola"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Intel"
+    },
+    {
+      "id": "Q081",
+      "order": 81,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which U.S. president ordered the invasion of Grenada in 1983?",
+      "answers": [
+        "Jimmy Carter",
+        "Ronald Reagan",
+        "George H.W. Bush",
+        "Bill Clinton"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Ronald Reagan"
+    },
+    {
+      "id": "Q082",
+      "order": 82,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which operating system did Microsoft release in 1985?",
+      "answers": [
+        "MS-DOS 1.0",
+        "Windows 1.0",
+        "OS/2",
+        "Macintosh System"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Windows 1.0"
+    },
+    {
+      "id": "Q083",
+      "order": 83,
+      "category": "Sports",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which boxer became the youngest heavyweight champion in 1986?",
+      "answers": [
+        "Muhammad Ali",
+        "George Foreman",
+        "Mike Tyson",
+        "Larry Holmes"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Mike Tyson"
+    },
+    {
+      "id": "Q084",
+      "order": 84,
+      "category": "Historical Events",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which Philippine leader was ousted in the People Power Revolution of 1986?",
+      "answers": [
+        "Ferdinand Marcos",
+        "Corazon Aquino",
+        "Benigno Aquino",
+        "Gloria Macapagal Arroyo"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Ferdinand Marcos"
+    },
+    {
+      "id": "Q085",
+      "order": 85,
+      "category": "Technology",
+      "difficulty": "medium",
+      "points": 120,
+      "question": "Which video game console did Nintendo release in North America in 1985?",
+      "answers": [
+        "Sega Master System",
+        "Nintendo Entertainment System",
+        "Atari 7800",
+        "Game Boy"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Nintendo Entertainment System"
+    },
+    {
+      "id": "Q086",
+      "order": 86,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "In which year did the Iran hostage crisis end with the release of 52 Americans?",
+      "answers": [
+        "1979",
+        "1980",
+        "1981",
+        "1982"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: 1981"
+    },
+    {
+      "id": "Q087",
+      "order": 87,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which company introduced the IBM PC in 1981?",
+      "answers": [
+        "Apple",
+        "IBM",
+        "Commodore",
+        "Atari"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: IBM"
+    },
+    {
+      "id": "Q088",
+      "order": 88,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which country boycotted the 1984 Los Angeles Olympics?",
+      "answers": [
+        "United States",
+        "China",
+        "Soviet Union",
+        "Japan"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Soviet Union"
+    },
+    {
+      "id": "Q089",
+      "order": 89,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "What was the U.S. military operation to remove Manuel Noriega from Panama called?",
+      "answers": [
+        "Desert Storm",
+        "Just Cause",
+        "Urgent Fury",
+        "Eagle Claw"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Just Cause"
+    },
+    {
+      "id": "Q090",
+      "order": 90,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which domain name extension was introduced in 1985?",
+      "answers": [
+        ".com",
+        ".org",
+        ".net",
+        ".edu"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: .com"
+    },
+    {
+      "id": "Q091",
+      "order": 91,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which NFL team won Super Bowl XX in 1986?",
+      "answers": [
+        "Chicago Bears",
+        "New England Patriots",
+        "San Francisco 49ers",
+        "Miami Dolphins"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Chicago Bears"
+    },
+    {
+      "id": "Q092",
+      "order": 92,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which South African leader was released from prison in 1990 after years of 1980s activism?",
+      "answers": [
+        "Desmond Tutu",
+        "Nelson Mandela",
+        "F.W. de Klerk",
+        "Thabo Mbeki"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Nelson Mandela"
+    },
+    {
+      "id": "Q093",
+      "order": 93,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which company launched the first commercial cellular network in the U.S. in 1983?",
+      "answers": [
+        "Motorola",
+        "AT&T",
+        "Verizon",
+        "Nokia"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: AT&T"
+    },
+    {
+      "id": "Q094",
+      "order": 94,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Who won the FIFA World Cup in 1986?",
+      "answers": [
+        "West Germany",
+        "Argentina",
+        "Brazil",
+        "Italy"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Argentina"
+    },
+    {
+      "id": "Q095",
+      "order": 95,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which treaty between the U.S. and Canada addressed acid rain in 1991 after 1980s negotiations?",
+      "answers": [
+        "INF Treaty",
+        "Air Quality Agreement",
+        "NAFTA",
+        "START I"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Air Quality Agreement"
+    },
+    {
+      "id": "Q096",
+      "order": 96,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which programming language did Bjarne Stroustrup develop at Bell Labs in the 1980s?",
+      "answers": [
+        "Java",
+        "C++",
+        "Python",
+        "Perl"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: C++"
+    },
+    {
+      "id": "Q097",
+      "order": 97,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which tennis player won Wimbledon in 1980 in a famous five-set final?",
+      "answers": [
+        "John McEnroe",
+        "Björn Borg",
+        "Jimmy Connors",
+        "Ivan Lendl"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Björn Borg"
+    },
+    {
+      "id": "Q098",
+      "order": 98,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which U.S. embassy was bombed in Beirut in 1983, killing 241 Marines?",
+      "answers": [
+        "U.S. Embassy Rome",
+        "Marine barracks Beirut",
+        "U.S. Embassy London",
+        "U.S. Embassy Tehran"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Marine barracks Beirut"
+    },
+    {
+      "id": "Q099",
+      "order": 99,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which satellite system became fully operational for civilian use in the 1980s?",
+      "answers": [
+        "Hubble",
+        "GPS",
+        "Mir",
+        "Skylab"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: GPS"
+    },
+    {
+      "id": "Q100",
+      "order": 100,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which baseball player broke Lou Gehrig's consecutive games record in 1985?",
+      "answers": [
+        "Pete Rose",
+        "Cal Ripken Jr.",
+        "Nolan Ryan",
+        "Hank Aaron"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Cal Ripken Jr."
+    },
+    {
+      "id": "Q101",
+      "order": 101,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which Polish trade union led by Lech Wałęsa challenged communist rule in the 1980s?",
+      "answers": [
+        "Solidarity",
+        "COMECON",
+        "Warsaw Pact",
+        "Red Army"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Solidarity"
+    },
+    {
+      "id": "Q102",
+      "order": 102,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which company created the PostScript page-description language in 1984?",
+      "answers": [
+        "Microsoft",
+        "Adobe",
+        "Apple",
+        "IBM"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Adobe"
+    },
+    {
+      "id": "Q103",
+      "order": 103,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which country hosted the 1988 Winter Olympics?",
+      "answers": [
+        "Norway",
+        "Canada",
+        "Japan",
+        "United States"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Canada"
+    },
+    {
+      "id": "Q104",
+      "order": 104,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which U.S. Supreme Court nominee hearings in 1987 focused on Anita Hill allegations?",
+      "answers": [
+        "Robert Bork",
+        "Clarence Thomas",
+        "Sandra Day O'Connor",
+        "Antonin Scalia"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Clarence Thomas"
+    },
+    {
+      "id": "Q105",
+      "order": 105,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which 1980s home computer sold over 17 million units worldwide?",
+      "answers": [
+        "Apple II",
+        "Commodore 64",
+        "IBM PC",
+        "TRS-80"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Commodore 64"
+    },
+    {
+      "id": "Q106",
+      "order": 106,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which Ethiopian runner won Olympic gold in the marathon at Los Angeles 1984?",
+      "answers": [
+        "Carl Lewis",
+        "Edwin Moses",
+        "Carlos Lopes",
+        "Sebastian Coe"
+      ],
+      "correctIndex": 2,
+      "explanation": "Answer: Carlos Lopes"
+    },
+    {
+      "id": "Q107",
+      "order": 107,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which U.S. policy nickname described Reagan's proposed missile-defense program?",
+      "answers": [
+        "Open Skies",
+        "Star Wars",
+        "New Deal",
+        "Great Society"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Star Wars"
+    },
+    {
+      "id": "Q108",
+      "order": 108,
+      "category": "Technology",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which 1980s networking protocol became the foundation of the modern internet?",
+      "answers": [
+        "TCP/IP",
+        "FTP only",
+        "Token Ring",
+        "AppleTalk"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: TCP/IP"
+    },
+    {
+      "id": "Q109",
+      "order": 109,
+      "category": "Sports",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which NBA team drafted Michael Jordan in 1984?",
+      "answers": [
+        "Los Angeles Lakers",
+        "Chicago Bulls",
+        "Boston Celtics",
+        "Detroit Pistons"
+      ],
+      "correctIndex": 1,
+      "explanation": "Answer: Chicago Bulls"
+    },
+    {
+      "id": "Q110",
+      "order": 110,
+      "category": "Historical Events",
+      "difficulty": "hard",
+      "points": 150,
+      "question": "Which 1989 event symbolized the end of the Cold War in Eastern Europe?",
+      "answers": [
+        "Fall of Berlin Wall",
+        "Chernobyl disaster",
+        "INF signing only",
+        "Gulf War start"
+      ],
+      "correctIndex": 0,
+      "explanation": "Answer: Fall of Berlin Wall"
+    }
+  ]
+}
