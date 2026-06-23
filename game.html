@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey Through the 1980s</title>
     <script>
     (function () {
@@ -17,50 +17,9 @@
         base.href = location.origin + path;
         document.head.appendChild(base);
     })();
-    (function () {
-        var REF_W = 1920;
-        var REF_H = 1080;
-        var SCALE = 0.48;
-        var SCALE_MIN = 0.38;
-        var resizeTimer;
-
-        function syncViewport() {
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-            document.documentElement.style.setProperty('--app-h', h + 'px');
-            document.documentElement.style.setProperty('--app-w', w + 'px');
-            var fit = Math.min(w / REF_W, h / REF_H);
-            var scale = Math.max(SCALE_MIN, fit * SCALE);
-            document.documentElement.style.setProperty('--ui-scale', String(scale));
-        }
-        function onResize() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(syncViewport, 80);
-        }
-        syncViewport();
-        window.addEventListener('resize', onResize);
-        window.addEventListener('orientationchange', function () {
-            setTimeout(syncViewport, 150);
-        });
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', onResize);
-        }
-        if ('ontouchstart' in window) {
-            document.addEventListener('touchmove', function (e) {
-                var el = e.target;
-                while (el && el !== document.documentElement) {
-                    if (el.classList && el.classList.contains('scroll-allow')) return;
-                    var oy = window.getComputedStyle(el).overflowY;
-                    if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 2) return;
-                    el = el.parentElement;
-                }
-                e.preventDefault();
-            }, { passive: false });
-        }
-    })();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="game.css?v=84">
+    <link rel="stylesheet" href="game.css?v=85">
 </head>
 <body class="phase-boot">
     <div id="gameLayer">
@@ -72,7 +31,6 @@
     <div class="vignette" aria-hidden="true"></div>
     <div id="screenFlash"></div>
     <div id="shakeRoot">
-    <div id="uiScale">
 
         <!-- [JUDGE] BOOT — First screen; js/ui.js boot() animates the loading bar -->
         <section id="bootScreen" class="view view-boot">
@@ -363,15 +321,13 @@
         <!-- [JUDGE] TRIVIA SCREEN — Question + 4 cards; images from js/cueArt.js (Wikipedia) -->
         <section id="triviaScreen" class="view trivia-screen hidden">
             <div class="arcade-cabinet">
-                <div class="trivia-question-bar">
-                    <div class="trivia-q-frame">
-                        <p id="triviaQuestion" class="trivia-question">Question appears here…</p>
-                    </div>
+                <div class="trivia-panel">
                     <div class="trivia-timer-wrap">
                         <div id="triviaTimerRing" class="trivia-timer-ring"><span id="triviaTimerNum">15</span></div>
                     </div>
-                </div>
-                <div class="trivia-panel">
+                    <div class="trivia-q-frame">
+                        <p id="triviaQuestion" class="trivia-question">Question appears here…</p>
+                    </div>
                 <div class="trivia-cards">
                     <button type="button" class="trivia-card a" id="triviaCard0" data-idx="0">
                         <div class="tc-img-wrap"><img class="tc-img" alt="" /><span class="tc-letter">A</span></div>
@@ -461,7 +417,6 @@
             <p id="levelUpTokens" class="level-up-reward">+15 🪙 COINS</p>
         </div>
     </div>
-    </div>
 
     <!-- [JUDGE] SCRIPTS — Load order matters: data first, main.js last starts the game -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -471,11 +426,11 @@
     <script src="globalLeaderboard.js?v=1"></script>
     <script src="profiles.js?v=50"></script>
     <script src="cueArt.js?v=62"></script>
-    <script src="fx.js?v=33"></script>
+    <script src="fx.js?v=32"></script>
     <script src="minigames.js?v=67"></script>
     <script src="worlds.js?v=32"></script>
-    <script src="engine.js?v=46"></script>
+    <script src="engine.js?v=45"></script>
     <script src="ui.js?v=66"></script>
-    <script src="main.js?v=59"></script>
+    <script src="main.js?v=60"></script>
 </body>
 </html>
