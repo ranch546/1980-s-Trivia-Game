@@ -300,10 +300,11 @@ AN.UI.showLevelAdvance = (levelNum, onDone, coinGain = 0) => {
 AN.UI.syncDockHeight = () => {
     const dock = AN.UI.$('statusDock');
     if (!dock || dock.classList.contains('hidden')) return;
-    const h = Math.ceil(dock.getBoundingClientRect().height);
+    // offsetHeight = layout px inside #uiFit; getBoundingClientRect is scaled and too small
+    const h = Math.ceil(dock.offsetHeight || dock.getBoundingClientRect().height);
     if (h > 0) {
         const lifeline = AN.UI.$('btnUseLifeline');
-        const pad = lifeline && !lifeline.classList.contains('hidden') ? 8 : 0;
+        const pad = lifeline && !lifeline.classList.contains('hidden') ? 10 : 0;
         document.documentElement.style.setProperty('--dock-h', (h + pad) + 'px');
     }
 };

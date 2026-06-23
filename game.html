@@ -19,7 +19,7 @@
     })();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="game.css?v=87">
+    <link rel="stylesheet" href="game.css?v=89">
 </head>
 <body class="phase-boot">
     <div id="gameLayer">
@@ -31,6 +31,7 @@
     <div class="vignette" aria-hidden="true"></div>
     <div id="screenFlash"></div>
     <div id="shakeRoot">
+    <div id="uiFit">
 
         <!-- [JUDGE] BOOT — First screen; js/ui.js boot() animates the loading bar -->
         <section id="bootScreen" class="view view-boot">
@@ -419,6 +420,7 @@
             <p id="levelUpTokens" class="level-up-reward">+15 🪙 COINS</p>
         </div>
     </div>
+    </div>
 
     <!-- [JUDGE] SCRIPTS — Load order matters: data first, main.js last starts the game -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -432,7 +434,7 @@
     <script src="minigames.js?v=67"></script>
     <script src="worlds.js?v=32"></script>
     <script src="engine.js?v=45"></script>
-    <script src="ui.js?v=66"></script>
+    <script src="ui.js?v=67"></script>
     <script src="main.js?v=60"></script>
 </body>
 </html>
