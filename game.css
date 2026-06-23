@@ -1,4 +1,4 @@
-/* build: 91 — centered result screens, instant hide trivia on answer */
+/* build: 92 — phone scroll (768px and below only) */
 /*
  * ═══════════════════════════════════════════════════════════════════════════
  * game.css — ALL VISUAL STYLES (Presentation / Judge Guide)
@@ -1995,4 +1995,81 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     font-size: clamp(1.1rem, 2.5vw, 1.45rem) !important;
     padding: 14px 32px !important;
     flex-shrink: 0;
+}
+
+/* ═══ PHONE ONLY (max 768px) — scroll to reach cut-off UI; laptop unchanged ═══ */
+@media (max-width: 768px) {
+    #uiFit .view-hub:not(.hidden),
+    #uiFit .view-login:not(.hidden),
+    #uiFit .view-modal:not(.hidden),
+    #uiFit .view-victory:not(.hidden),
+    #uiFit .trivia-result:not(.hidden) {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+    }
+
+    .view-hub {
+        overflow-y: auto !important;
+    }
+
+    #uiFit .hub-shell {
+        min-height: auto !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        justify-content: flex-start !important;
+        padding-bottom: 48px !important;
+    }
+
+    #uiFit .view-login .login-shell {
+        padding-bottom: 40px;
+    }
+
+    #uiFit .view-modal {
+        padding-top: 12px !important;
+        padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+    }
+
+    #uiFit .modal-panel,
+    #uiFit .modal-panel-xl {
+        max-height: none !important;
+        overflow: visible !important;
+        margin-bottom: 16px;
+    }
+
+    #uiFit .help-modal-fullscreen {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    #uiFit .help-modal-fullscreen .help-grid {
+        overflow: visible !important;
+        padding-bottom: 16px;
+    }
+
+    #uiFit .lb-table-wrap {
+        max-height: 55vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #uiFit .trivia-result:not(.hidden) {
+        align-items: center !important;
+    }
+
+    #uiFit .result-panel-full {
+        max-height: none !important;
+        margin: 12px auto 24px !important;
+    }
+
+    #uiFit .victory-shell {
+        padding-bottom: 32px;
+    }
 }
