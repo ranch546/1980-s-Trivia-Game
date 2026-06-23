@@ -387,6 +387,7 @@ AN.Main = {
         if (r.playSub !== 'trivia' || r._resolving) return;
         if (idx >= 0 && r.eliminated?.has(idx)) return;
         r._resolving = true;
+        AN.UI.hide('triviaScreen');
         AN.Main.stopTriviaTimer();
         r.triviaTimer = null;
 
@@ -431,8 +432,6 @@ AN.Main = {
         AN.UI.updateLifelineBtn();
 
         AN.persist(r.save);
-        AN.UI.popScore();
-        AN.UI.updatePlayHud();
         r.playSub = 'result';
         r._lastResult = { ok, pick, pts, luckySave, levelUp };
         const showResult = () => {
@@ -444,6 +443,8 @@ AN.Main = {
         } else {
             showResult();
         }
+        AN.UI.popScore();
+        AN.UI.updatePlayHud();
     },
 
     continueAfterResult() {

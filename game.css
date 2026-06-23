@@ -1,4 +1,4 @@
-/* build: 90 — fix result overlay, lag, help modal */
+/* build: 91 — centered result screens, instant hide trivia on answer */
 /*
  * ═══════════════════════════════════════════════════════════════════════════
  * game.css — ALL VISUAL STYLES (Presentation / Judge Guide)
@@ -1713,9 +1713,10 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     height: 100% !important;
     justify-content: center;
     align-items: center;
-    padding: calc(var(--dock-h, 140px) + 12px) 16px 16px;
+    padding: calc(var(--dock-h, 140px) + 8px) 20px 20px;
     box-sizing: border-box;
     background: #05020c !important;
+    overflow: hidden;
 }
 .result-bg {
     position: absolute; inset: 0; pointer-events: none;
@@ -1723,8 +1724,24 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
         radial-gradient(ellipse 70% 45% at 50% 35%, rgba(255,43,214,0.18), transparent 60%),
         linear-gradient(180deg, #0a0218 0%, #12082a 50%, #08041a 100%);
 }
-.trivia-result .result-actions { pointer-events: auto; width: 100%; max-width: 720px; }
-.trivia-result .result-actions .arcade-btn { pointer-events: auto; cursor: pointer; width: 100%; }
+.trivia-result .result-actions {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 100%;
+    margin-top: clamp(8px, 1.5vh, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+}
+.trivia-result .result-actions .arcade-btn {
+    pointer-events: auto;
+    cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
 .trivia-result.ok .result-title { color: var(--cyan); text-shadow: 0 0 40px var(--cyan); }
 .trivia-result.miss .result-title { color: #ff6688; text-shadow: 0 0 40px rgba(255,51,102,0.55); }
 .trivia-result.game-over .result-title { color: var(--red); text-shadow: 0 0 50px var(--red); }
@@ -1741,17 +1758,26 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
 }
 .result-panel, .arcade-result {
     position: relative; z-index: 2;
-    text-align: center; width: min(900px, 96vw); max-width: none;
+    text-align: center;
+    width: 88%;
+    max-width: 680px;
     margin: 0 auto;
-    padding: clamp(36px, 5vh, 56px) clamp(28px, 4vw, 48px);
-    background: linear-gradient(160deg, rgba(18,6,36,0.97), rgba(6,2,14,0.99));
+    padding: clamp(28px, 4vh, 44px) clamp(24px, 4vw, 36px);
+    background: linear-gradient(160deg, rgba(18,6,36,0.98), rgba(6,2,14,0.99));
     border: 3px solid var(--pink); border-radius: 24px;
-    box-shadow: 0 0 0 1px rgba(0,245,255,0.3), 0 0 100px rgba(255,43,214,0.35);
+    box-shadow: 0 0 0 1px rgba(0,245,255,0.3), 0 0 80px rgba(255,43,214,0.35);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(8px, 1.2vh, 14px);
 }
 .result-panel-full {
     min-height: auto;
-    max-height: calc(100vh - var(--dock-h, 88px) - 48px);
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    max-height: calc(100% - 16px);
+    overflow-y: auto;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 .result-title {
     font-family: var(--font-h);
@@ -1779,25 +1805,27 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     color: #e8e4ff; margin-bottom: 14px;
 }
 .result-ans {
-    font-size: clamp(1.35rem, 3.8vw, 2.1rem); color: var(--gold);
-    margin-bottom: clamp(20px, 3vh, 28px); font-weight: 700;
+    font-size: clamp(1.2rem, 3vw, 1.75rem); color: var(--gold);
+    margin-bottom: clamp(10px, 1.5vh, 16px); font-weight: 700;
 }
 .result-lifeline-hint {
     font-family: var(--font-h);
-    font-size: clamp(1rem, 2.5vw, 1.4rem); letter-spacing: 0.06em;
-    color: var(--cyan); margin-bottom: 20px;
-    padding: clamp(14px, 2vh, 18px) clamp(18px, 3vw, 24px); border-radius: 14px;
+    font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 0.04em;
+    color: var(--cyan); margin-bottom: 6px;
+    padding: clamp(10px, 1.5vh, 14px) clamp(14px, 2.5vw, 18px); border-radius: 12px;
     background: rgba(0,245,255,0.1); border: 2px solid rgba(0,245,255,0.35);
-    animation: pulse 1.5s ease infinite;
 }
-.result-actions { display: flex; flex-direction: column; gap: clamp(12px, 2vh, 16px); margin-top: 8px; }
+.result-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; width: 100%; }
 .arcade-btn-lifeline {
     background: linear-gradient(135deg, var(--pink), var(--purple)) !important;
     border: 3px solid var(--gold) !important;
-    font-size: clamp(1.1rem, 2.8vw, 1.45rem) !important;
-    padding: clamp(18px, 2.5vh, 24px) clamp(24px, 4vw, 32px) !important;
-    box-shadow: 0 0 30px rgba(255,43,214,0.5) !important;
-    animation: lifelineGlow 1.2s ease infinite alternate;
+    font-size: clamp(0.95rem, 2.2vw, 1.2rem) !important;
+    padding: clamp(14px, 2vh, 18px) clamp(16px, 3vw, 24px) !important;
+    box-shadow: 0 0 24px rgba(255,43,214,0.45) !important;
+    white-space: normal;
+    line-height: 1.25;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* LEVEL UP — Gimkit / Roblox style */
@@ -1913,6 +1941,19 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     width: 100% !important;
     height: 100% !important;
     z-index: 35 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: calc(var(--dock-h, 140px) + 8px) 24px 24px !important;
+}
+#uiFit .result-panel,
+#uiFit .arcade-result {
+    width: 90% !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+}
+#uiFit .result-panel-full {
+    max-height: calc(100% - 12px) !important;
 }
 
 /* How to Play — full screen inside scaled UI */
