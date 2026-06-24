@@ -1,4 +1,4 @@
-/* build: 94 — reverted laptop layout (scale hack restored) */
+/* build: 95 — phone scroll + center (laptop scale unchanged) */
 /*
  * ═══════════════════════════════════════════════════════════════════════════
  * game.css — ALL VISUAL STYLES (Presentation / Judge Guide)
@@ -1995,34 +1995,104 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     flex-shrink: 0;
 }
 
-/* PHONE ONLY — scroll on small screens; laptop (769px+) unchanged */
+/* PHONE ONLY — scroll + center; laptop (769px+) unchanged */
 @media (max-width: 768px) {
+    html, body {
+        font-size: clamp(14px, 3.6vw, 16px);
+        overflow-x: hidden;
+    }
+
+    #shakeRoot {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* No scale on phone — fixes cut-off answers and left/right drift */
+    #uiFit {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 100dvh;
+        transform: none !important;
+        overflow: visible !important;
+    }
+
+    #uiFit .view {
+        position: relative !important;
+        inset: auto !important;
+        width: 100% !important;
+        min-height: 100dvh;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    #uiFit .view-boot:not(.hidden),
+    #uiFit .view-warp:not(.hidden),
+    #uiFit .view-level-advance:not(.hidden) {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100dvh !important;
+        z-index: 20;
+    }
+
     #uiFit .view-hub:not(.hidden),
     #uiFit .view-login:not(.hidden),
     #uiFit .view-modal:not(.hidden),
     #uiFit .view-victory:not(.hidden),
     #uiFit .trivia-result:not(.hidden) {
+        display: flex !important;
+        flex-direction: column !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
         justify-content: flex-start !important;
-        align-items: stretch !important;
-        padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+        align-items: center !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
     }
 
-    .view-hub { overflow-y: auto !important; }
+    .view-hub { overflow-y: auto !important; align-items: center !important; }
 
     #uiFit .hub-shell {
         min-height: auto !important;
         height: auto !important;
         max-height: none !important;
+        width: 100% !important;
+        max-width: 480px !important;
+        margin: 0 auto !important;
         overflow: visible !important;
         justify-content: flex-start !important;
-        padding-bottom: 48px !important;
+        align-items: center !important;
+        text-align: center;
+        padding: 20px 16px 48px !important;
     }
 
-    #uiFit .view-login .login-shell { padding-bottom: 40px; }
+    .hub-header {
+        justify-content: center !important;
+        align-items: center !important;
+        flex-direction: column !important;
+        text-align: center;
+        width: 100%;
+    }
+    .hub-currencies { justify-content: center !important; width: 100%; }
+    .hub-coins-big { margin: 0 auto; }
+    .hub-actions { justify-content: center !important; width: 100%; }
+    .hub-start-wrap { align-items: center !important; width: 100%; }
+    .hub-resume-btn, .hub-start-btn { width: 100%; max-width: 320px; }
+
+    #uiFit .view-login .login-shell {
+        width: 100% !important;
+        max-width: 480px !important;
+        margin: 0 auto !important;
+        padding-bottom: 40px;
+    }
 
     #uiFit .view-modal {
         padding-top: 12px !important;
@@ -2030,32 +2100,112 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     }
 
     #uiFit .modal-panel,
-    #uiFit .modal-panel-xl {
+    #uiFit .modal-panel-xl,
+    #uiFit .modal-panel-landscape {
+        width: 94% !important;
+        max-width: 480px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
         max-height: none !important;
         overflow: visible !important;
         margin-bottom: 16px;
     }
 
-    #uiFit .help-modal-fullscreen {
+    /* Quiz — scroll down to see all answer cards */
+    #uiFit .phase-play .trivia-screen:not(.hidden) {
+        position: relative !important;
+        inset: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 100dvh !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        padding-top: calc(var(--dock-h, 118px) + 4px) !important;
+        padding-bottom: max(32px, env(safe-area-inset-bottom)) !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .phase-play .trivia-screen {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        align-items: center !important;
+    }
+
+    .arcade-cabinet {
+        width: 100% !important;
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        flex: 0 0 auto !important;
+    }
+
+    .trivia-panel {
+        width: 100% !important;
+        max-width: 480px !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
         height: auto !important;
         min-height: 0 !important;
+        flex: 0 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px;
+        padding: 10px 12px 20px !important;
+    }
+
+    .trivia-top { flex-shrink: 0; min-height: auto; width: 100%; }
+    .trivia-q-frame { min-height: auto; }
+
+    .trivia-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        overflow: visible !important;
+        min-height: auto !important;
+        height: auto !important;
+        align-content: start !important;
+        width: 100%;
+    }
+
+    .trivia-card {
+        min-height: 130px !important;
+        height: auto !important;
+    }
+
+    .tc-img-wrap { min-height: 68px !important; flex: 1 1 auto; }
+
+    #uiFit .phase-play .minigame-screen:not(.hidden) {
+        position: relative !important;
+        overflow-y: auto !important;
+        align-items: center !important;
+        min-height: 100dvh !important;
+        height: auto !important;
         max-height: none !important;
-        overflow: visible !important;
+        padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
     }
 
-    #uiFit .help-modal-fullscreen .help-grid {
-        overflow: visible !important;
-        padding-bottom: 16px;
-    }
+    .mg-panel { margin: 0 auto; max-width: 480px; }
 
-    #uiFit .lb-table-wrap {
-        max-height: 55vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+    :root { --dock-h: 118px; }
+    .status-dock { padding: 8px 10px 10px; gap: 6px; }
+    .dock-center { gap: 10px; padding: 6px 12px; }
+    .dock-meta { align-items: center !important; text-align: center !important; }
+    .dock-right { align-items: center !important; text-align: center !important; }
 
     #uiFit .trivia-result:not(.hidden) {
         align-items: center !important;
+    }
+
+    #uiFit .result-panel,
+    #uiFit .arcade-result {
+        width: 92% !important;
+        max-width: 400px !important;
+        margin: 12px auto 24px !important;
     }
 
     #uiFit .result-panel-full {
@@ -2063,5 +2213,31 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
         margin: 12px auto 24px !important;
     }
 
-    #uiFit .victory-shell { padding-bottom: 32px; }
+    #uiFit .victory-shell {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        padding-bottom: 32px;
+        align-items: center;
+    }
+
+    #uiFit .help-modal-fullscreen {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 0 auto;
+    }
+
+    #uiFit .help-modal-fullscreen .help-grid {
+        grid-template-columns: 1fr !important;
+        overflow: visible !important;
+        padding-bottom: 16px;
+    }
+
+    #uiFit .lb-table-wrap {
+        max-height: 50vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }

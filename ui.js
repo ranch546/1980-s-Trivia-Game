@@ -50,6 +50,7 @@ AN.UI.boot = (onDone) => {
 
 AN.UI._pendingLoginId = null;
 AN.UI._pendingDeleteId = null;
+AN.UI._pinMode = 'login';
 
 AN.UI.showLogin = () => {
     document.body.className = 'phase-login';
@@ -111,14 +112,10 @@ AN.UI.promptDeleteAccount = (id) => {
     const pinField = AN.UI.$('deleteConfirmPin');
     const err = AN.UI.$('deleteError');
     if (err) err.classList.add('hidden');
-    if (p.pin) {
-        pinField?.classList.remove('hidden');
-        if (pinField) pinField.value = '';
-    } else {
-        pinField?.classList.add('hidden');
-    }
+    pinField?.classList.remove('hidden');
+    if (pinField) pinField.value = '';
     AN.UI.show('deleteAccountModal');
-    setTimeout(() => (p.pin ? pinField : AN.UI.$('btnDeleteConfirm'))?.focus(), 100);
+    setTimeout(() => pinField?.focus(), 100);
 };
 
 AN.UI.confirmDeleteAccount = () => {
@@ -126,12 +123,10 @@ AN.UI.confirmDeleteAccount = () => {
     const p = AN.Profiles.get(id);
     if (!p) return;
     const err = AN.UI.$('deleteError');
-    if (p.pin) {
-        const pin = AN.UI.$('deleteConfirmPin')?.value || '';
-        if (pin !== p.pin) {
-            if (err) { err.textContent = 'Wrong PIN — cannot delete'; err.classList.remove('hidden'); }
-            return;
-        }
+    const pin = AN.UI.$('deleteConfirmPin')?.value || '';
+    if (!AN.Profiles.checkPin(id, pin)) {
+        if (err) { err.textContent = 'Wrong PIN — cannot delete'; err.classList.remove('hidden'); }
+        return;
     }
     const wasActive = AN.Profiles.getActiveId() === id;
     AN.Profiles.delete(id);
@@ -163,23 +158,36 @@ AN.UI._esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').repla
 AN.UI.selectPlayer = (id) => {
     const p = AN.Profiles.get(id);
     if (!p) return;
-    if (p.pin) {
-        AN.UI._pendingLoginId = id;
-        AN.UI.$('pinModalTitle').textContent = 'HI ' + p.name.toUpperCase();
-        AN.UI.$('pinModalSub').textContent = 'Enter your 4-digit PIN';
-        AN.UI.$('pinInput').value = '';
-        AN.UI.$('pinError')?.classList.add('hidden');
-        AN.UI.show('pinModal');
-        setTimeout(() => AN.UI.$('pinInput')?.focus(), 100);
-        return;
-    }
-    AN.Main.loginAs(id);
+    AN.UI._pendingLoginId = id;
+    AN.UI._pinMode = AN.Profiles._isValidPin(p.pin) ? 'login' : 'setup';
+    AN.UI.$('pinModalTitle').textContent = AN.UI._pinMode === 'setup'
+        ? 'SET YOUR PIN'
+        : ('HI ' + p.name.toUpperCase());
+    AN.UI.$('pinModalSub').textContent = AN.UI._pinMode === 'setup'
+        ? 'Choose a 4-digit PIN (required)'
+        : 'Enter your 4-digit PIN';
+    AN.UI.$('pinInput').value = '';
+    AN.UI.$('pinError')?.classList.add('hidden');
+    AN.UI.show('pinModal');
+    setTimeout(() => AN.UI.$('pinInput')?.focus(), 100);
 };
 
 AN.UI.confirmPin = () => {
     const id = AN.UI._pendingLoginId;
     const pin = AN.UI.$('pinInput')?.value || '';
     if (!id) return;
+    if (AN.UI._pinMode === 'setup') {
+        if (!AN.Profiles.setPin(id, pin)) {
+            const pe = AN.UI.$('pinError');
+            if (pe) { pe.textContent = 'PIN must be exactly 4 digits'; pe.classList.remove('hidden'); }
+            return;
+        }
+        AN.UI.hide('pinModal');
+        AN.UI._pendingLoginId = null;
+        AN.UI._pinMode = 'login';
+        AN.Main.loginAs(id);
+        return;
+    }
     if (!AN.Profiles.login(id, pin)) {
         const pe = AN.UI.$('pinError');
         if (pe) { pe.textContent = 'Wrong PIN — try again'; pe.classList.remove('hidden'); }
@@ -197,9 +205,9 @@ AN.UI.createPlayer = () => {
     const p = AN.Profiles.create(name, pin);
     if (!p) {
         if (err) {
-            err.textContent = name.trim().length < 2
-                ? 'Name must be at least 2 characters'
-                : 'That name is already taken — pick another';
+            if (name.trim().length < 2) err.textContent = 'Name must be at least 2 characters';
+            else if (!AN.Profiles._isValidPin(pin)) err.textContent = 'PIN required — enter exactly 4 digits';
+            else err.textContent = 'That name is already taken — pick another';
             err.classList.remove('hidden');
         }
         return;

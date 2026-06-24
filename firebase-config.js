@@ -18,5 +18,7 @@
  * Everyone who plays your game will see the same worldwide leaderboard.
  */
 window.AN_GLOBAL_LB = {
-    databaseURL: 'https://nationals-game-d849e-default-rtdb.firebaseio.com'
+    databaseURL: 'https://nationals-game-d849e-default-rtdb.firebaseio.com',
+    /** Bump this number to wipe the worldwide leaderboard once (for fresh demo / Nationals). */
+    leaderboardResetVersion: 2
 };

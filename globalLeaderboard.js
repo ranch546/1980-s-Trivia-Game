@@ -14,6 +14,30 @@ AN.GlobalLB._base = () => {
     return url + '/leaderboard';
 };
 
+AN.GlobalLB._pinKey = () => 'an_lb_reset_v';
+
+/** Clears remote leaderboard once when leaderboardResetVersion bumps in firebase-config.js */
+AN.GlobalLB.ensureFreshBoard = async () => {
+    if (!AN.GlobalLB.isEnabled()) return;
+    const ver = AN.GlobalLB._cfg().leaderboardResetVersion;
+    if (!ver) return;
+    if (localStorage.getItem(AN.GlobalLB._pinKey()) === String(ver)) return;
+    try {
+        await fetch(AN.GlobalLB._base() + '.json', { method: 'DELETE' });
+        localStorage.setItem(AN.GlobalLB._pinKey(), String(ver));
+    } catch (_) {}
+};
+
+AN.GlobalLB.clearRemote = async () => {
+    if (!AN.GlobalLB.isEnabled()) return false;
+    try {
+        const res = await fetch(AN.GlobalLB._base() + '.json', { method: 'DELETE' });
+        return res.ok;
+    } catch (_) {
+        return false;
+    }
+};
+
 AN.GlobalLB._ensureGlobalId = (profile) => {
     if (!profile) return null;
     if (profile.globalId) return profile.globalId;

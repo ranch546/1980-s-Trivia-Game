@@ -27,7 +27,7 @@ AN.bank = [];
 AN.Main = {
     /* ── INIT: wire up UI buttons, load questions, start game loop ── */
     init() {
-        AN.Profiles.init();
+        AN._profilesReady = AN.Profiles.init();
         AN.FX.init();
         AN.Engine.init();
         AN.run = { save: AN.defaultSave(), phase: 'boot' };
@@ -39,12 +39,10 @@ AN.Main = {
         ]);
 
         AN.UI.boot(() => {
-            AN._bootReady.then(() => {
+            Promise.all([AN._bootReady, AN._profilesReady]).then(() => {
                 if (!AN.bank?.length) AN.UI.toast('Questions missing — add questions.json next to index.html', false);
                 AN.run.phase = 'login';
-                const active = AN.Profiles.getActive();
-                if (active && !active.pin) AN.Main.loginAs(active.id);
-                else AN.UI.showLogin();
+                AN.UI.showLogin();
             });
         });
 

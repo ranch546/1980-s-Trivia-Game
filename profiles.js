@@ -58,7 +58,11 @@ AN.Profiles._migrateLegacy = () => {
     return reg;
 };
 
-AN.Profiles.init = () => {
+AN.Profiles._normalizePin = (pin) => String(pin || '').replace(/\D/g, '').slice(0, 4);
+
+AN.Profiles._isValidPin = (pin) => AN.Profiles._normalizePin(pin).length === 4;
+
+AN.Profiles.init = async () => {
     AN.Profiles._migrateLegacy();
     const reg = AN.Profiles._readRegistry();
     let changed = false;
@@ -69,7 +73,7 @@ AN.Profiles.init = () => {
         }
     });
     if (changed) AN.Profiles._writeRegistry(reg);
-    AN.GlobalLB?.syncAllLocal?.();
+    await AN.GlobalLB?.ensureFreshBoard?.();
 };
 
 AN.Profiles.list = () => AN.Profiles._readRegistry().profiles;
@@ -103,14 +107,16 @@ AN.Profiles.setActive = (id) => {
 
 AN.Profiles.create = (name, pin = '') => {
     const trimmed = (name || '').trim();
+    const pinNorm = AN.Profiles._normalizePin(pin);
     if (trimmed.length < 2 || trimmed.length > 18) return null;
+    if (!AN.Profiles._isValidPin(pinNorm)) return null;
     const reg = AN.Profiles._readRegistry();
     if (reg.profiles.some(p => p.name.toLowerCase() === trimmed.toLowerCase())) return null;
     const id = 'p_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
     const profile = {
         id,
         name: trimmed,
-        pin: String(pin || '').replace(/\D/g, '').slice(0, 4),
+        pin: pinNorm,
         globalId: 'g_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
         createdAt: Date.now(),
         lastPlayed: Date.now()
@@ -122,11 +128,21 @@ AN.Profiles.create = (name, pin = '') => {
     return profile;
 };
 
+AN.Profiles.setPin = (id, pin) => {
+    const pinNorm = AN.Profiles._normalizePin(pin);
+    if (!AN.Profiles._isValidPin(pinNorm)) return false;
+    const reg = AN.Profiles._readRegistry();
+    const p = reg.profiles.find(x => x.id === id);
+    if (!p) return false;
+    p.pin = pinNorm;
+    AN.Profiles._writeRegistry(reg);
+    return true;
+};
+
 AN.Profiles.checkPin = (id, pin) => {
     const p = AN.Profiles.get(id);
-    if (!p) return false;
-    if (!p.pin) return true;
-    return String(pin || '') === p.pin;
+    if (!p || !AN.Profiles._isValidPin(p.pin)) return false;
+    return AN.Profiles._normalizePin(pin) === p.pin;
 };
 
 AN.Profiles.login = (id, pin) => {
