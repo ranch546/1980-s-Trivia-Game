@@ -105,17 +105,48 @@ AN.UI.promptDeleteAccount = (id) => {
     const p = AN.Profiles.get(id);
     if (!p) return;
     AN.UI._pendingDeleteId = id;
+    AN.UI._deleteForgotMode = false;
     const msg = AN.UI.$('deleteAccountMsg');
     if (msg) {
         msg.textContent = `Permanently delete "${p.name}" and ALL saved progress (XP, tokens, trophies, upgrades)? This cannot be undone.`;
     }
     const pinField = AN.UI.$('deleteConfirmPin');
+    const nameField = AN.UI.$('deleteConfirmName');
     const err = AN.UI.$('deleteError');
     if (err) err.classList.add('hidden');
     pinField?.classList.remove('hidden');
     if (pinField) pinField.value = '';
+    nameField?.classList.add('hidden');
+    if (nameField) nameField.value = '';
+    AN.UI.$('btnDeleteForgotPin')?.classList.remove('hidden');
     AN.UI.show('deleteAccountModal');
     setTimeout(() => pinField?.focus(), 100);
+};
+
+AN.UI.toggleDeleteForgotPin = () => {
+    const p = AN.Profiles.get(AN.UI._pendingDeleteId);
+    if (!p) return;
+    AN.UI._deleteForgotMode = !AN.UI._deleteForgotMode;
+    const pinField = AN.UI.$('deleteConfirmPin');
+    const nameField = AN.UI.$('deleteConfirmName');
+    const err = AN.UI.$('deleteError');
+    const forgotBtn = AN.UI.$('btnDeleteForgotPin');
+    if (err) err.classList.add('hidden');
+    if (AN.UI._deleteForgotMode) {
+        pinField?.classList.add('hidden');
+        if (pinField) pinField.value = '';
+        nameField?.classList.remove('hidden');
+        if (nameField) nameField.value = '';
+        if (forgotBtn) forgotBtn.textContent = 'Use PIN instead';
+        setTimeout(() => nameField?.focus(), 100);
+    } else {
+        nameField?.classList.add('hidden');
+        if (nameField) nameField.value = '';
+        pinField?.classList.remove('hidden');
+        if (pinField) pinField.value = '';
+        if (forgotBtn) forgotBtn.textContent = 'Forgot PIN?';
+        setTimeout(() => pinField?.focus(), 100);
+    }
 };
 
 AN.UI.confirmDeleteAccount = () => {
@@ -123,15 +154,24 @@ AN.UI.confirmDeleteAccount = () => {
     const p = AN.Profiles.get(id);
     if (!p) return;
     const err = AN.UI.$('deleteError');
-    const pin = AN.UI.$('deleteConfirmPin')?.value || '';
-    if (!AN.Profiles.checkPin(id, pin)) {
-        if (err) { err.textContent = 'Wrong PIN — cannot delete'; err.classList.remove('hidden'); }
-        return;
+    if (AN.UI._deleteForgotMode) {
+        const typed = (AN.UI.$('deleteConfirmName')?.value || '').trim();
+        if (typed.toLowerCase() !== p.name.toLowerCase()) {
+            if (err) { err.textContent = 'Name does not match — type the exact account name'; err.classList.remove('hidden'); }
+            return;
+        }
+    } else {
+        const pin = AN.UI.$('deleteConfirmPin')?.value || '';
+        if (!AN.Profiles.checkPin(id, pin)) {
+            if (err) { err.textContent = 'Wrong PIN — cannot delete'; err.classList.remove('hidden'); }
+            return;
+        }
     }
     const wasActive = AN.Profiles.getActiveId() === id;
     AN.Profiles.delete(id);
     AN.UI.hide('deleteAccountModal');
     AN.UI._pendingDeleteId = null;
+    AN.UI._deleteForgotMode = false;
     if (wasActive) {
         AN.run.save = AN.defaultSave();
         AN.run.phase = 'login';
@@ -602,11 +642,19 @@ AN.UI.showTriviaResult = (ok, q, pick, pts, luckySave = false, levelUp = null) =
 
     if (gate) {
         const nextLabel = AN.quizLevelLabel(gate.blocked);
-        AN.UI.$('resultExplain').textContent =
-            `You finished Level ${gate.completed} (${AN.quizLevelLabel(gate.completed)}) with ${gate.score} points. `
-            + `You need 0 or higher to unlock Level ${gate.blocked} (${nextLabel}). Try this run again!`;
+        const explainEl = AN.UI.$('resultExplain');
+        if (explainEl) {
+            explainEl.textContent =
+                `You finished Level ${gate.completed} (${AN.quizLevelLabel(gate.completed)}) with ${gate.score} points. `
+                + `You need 0 or higher to unlock Level ${gate.blocked} (${nextLabel}). Try this run again!`;
+            explainEl.classList.remove('hidden');
+        }
     } else {
-        AN.UI.$('resultExplain').textContent = q.explanation;
+        const explainEl = AN.UI.$('resultExplain');
+        if (explainEl) {
+            explainEl.textContent = '';
+            explainEl.classList.add('hidden');
+        }
     }
 
     const pickedEl = AN.UI.$('resultPickedAnswer');
@@ -623,8 +671,12 @@ AN.UI.showTriviaResult = (ok, q, pick, pts, luckySave = false, levelUp = null) =
             pickedEl.classList.add('hidden');
         }
     }
-    AN.UI.$('resultAnswer').textContent =
-        'Correct answer: ' + AN.ANSWER_LABELS[q.correctIndex] + '. ' + q.answers[q.correctIndex];
+    const correctEl = AN.UI.$('resultAnswer');
+    if (correctEl) {
+        correctEl.textContent =
+            'Correct answer: ' + AN.ANSWER_LABELS[q.correctIndex] + '. ' + q.answers[q.correctIndex];
+        correctEl.classList.remove('hidden');
+    }
 
     const streakEl = AN.UI.$('resultStreak');
     if (AN.run.streak > 1) {

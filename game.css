@@ -1857,15 +1857,22 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     color: #e8e4ff; margin-bottom: 14px;
 }
 .result-picked {
-    font-size: clamp(1.15rem, 2.8vw, 1.65rem); line-height: 1.4;
-    color: #c8c4e8; margin-bottom: 8px; font-weight: 600;
+    font-size: clamp(1.45rem, 3.6vw, 2.15rem); line-height: 1.35;
+    color: #c8c4e8; margin-bottom: 10px; font-weight: 700;
 }
 .trivia-result.miss .result-picked { color: #ff99aa; }
 .trivia-result.ok .result-picked { color: var(--cyan); }
 .result-ans {
-    font-size: clamp(1.2rem, 3vw, 1.75rem); color: var(--gold);
-    margin-bottom: clamp(10px, 1.5vh, 16px); font-weight: 700;
+    font-size: clamp(1.5rem, 3.8vw, 2.25rem); color: var(--gold);
+    margin-bottom: clamp(12px, 1.8vh, 18px); font-weight: 800;
 }
+.delete-forgot-link {
+    display: block; width: 100%; margin: 6px 0 4px;
+    background: none; border: none; padding: 4px 0;
+    font-family: var(--font-b); font-size: 0.85rem;
+    color: var(--cyan); cursor: pointer; text-decoration: underline;
+}
+.delete-forgot-link:hover { color: #fff; }
 .result-lifeline-hint {
     font-family: var(--font-h);
     font-size: clamp(0.9rem, 2vw, 1.1rem); letter-spacing: 0.04em;

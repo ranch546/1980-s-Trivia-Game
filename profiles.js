@@ -62,8 +62,20 @@ AN.Profiles._normalizePin = (pin) => String(pin || '').replace(/\D/g, '').slice(
 
 AN.Profiles._isValidPin = (pin) => AN.Profiles._normalizePin(pin).length === 4;
 
+AN.Profiles._purgeNamedProfiles = (names) => {
+    const reg = AN.Profiles._readRegistry();
+    const lower = names.map(n => String(n).toLowerCase());
+    const removeIds = reg.profiles.filter(p => lower.includes(p.name.toLowerCase())).map(p => p.id);
+    if (!removeIds.length) return;
+    removeIds.forEach(id => localStorage.removeItem(AN.Profiles.saveKey(id)));
+    reg.profiles = reg.profiles.filter(p => !removeIds.includes(p.id));
+    if (reg.activeId && removeIds.includes(reg.activeId)) reg.activeId = reg.profiles[0]?.id || null;
+    AN.Profiles._writeRegistry(reg);
+};
+
 AN.Profiles.init = async () => {
     AN.Profiles._migrateLegacy();
+    AN.Profiles._purgeNamedProfiles(['bub', 'rey']);
     const reg = AN.Profiles._readRegistry();
     let changed = false;
     reg.profiles.forEach(p => {
