@@ -55,6 +55,7 @@ AN.Main = {
         AN.UI.bind('btnSwitchPlayer', () => AN.Main.switchPlayer());
         AN.UI.bind('btnDeleteMyAccount', () => AN.UI.deleteActiveAccount());
         AN.UI.bind('btnDeleteConfirm', () => AN.UI.confirmDeleteAccount());
+        AN.UI.bind('btnDeleteForgotPin', () => AN.UI.toggleDeleteForgotPin());
         AN.UI.bind('btnDeleteCancel', () => {
             AN.UI.hide('deleteAccountModal');
             AN.UI._pendingDeleteId = null;
