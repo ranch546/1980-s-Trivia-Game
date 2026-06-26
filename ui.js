@@ -24,6 +24,16 @@ AN.UI.bind = (id, fn) => { const el = AN.UI.$(id); if (el) el.onclick = fn; };
 AN.UI.show = (id) => AN.UI.$(id)?.classList.remove('hidden');
 AN.UI.hide = (id) => AN.UI.$(id)?.classList.add('hidden');
 
+AN.UI.isPhoneDevice = () =>
+    window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    || window.matchMedia('(max-width: 768px)').matches;
+
+AN.UI.applyDeviceClass = () => {
+    const phone = AN.UI.isPhoneDevice();
+    document.body.classList.toggle('is-phone', phone);
+    document.body.classList.toggle('is-desktop', !phone);
+};
+
 AN.UI.toast = (msg, ok) => {
     AN.UI.$('atTitle').textContent = ok ? 'SUCCESS' : 'NOTICE';
     AN.UI.$('atDesc').textContent = msg;
@@ -60,7 +70,14 @@ AN.UI.showLogin = () => {
     AN.UI.show('loginScreen');
     AN.UI.renderPlayerList();
     const err = AN.UI.$('loginError');
-    if (err) { err.classList.add('hidden'); err.textContent = ''; }
+    if (err) {
+        err.classList.add('hidden');
+        err.textContent = '';
+        if (!AN.Profiles.storageOk()) {
+            err.textContent = '⚠️ Saves may not work on this browser — turn off Private Browsing and allow site storage.';
+            err.classList.remove('hidden');
+        }
+    }
 };
 
 AN.UI.renderPlayerList = () => {
@@ -85,7 +102,7 @@ AN.UI.renderPlayerList = () => {
             btn.innerHTML = `
                 <div>
                     <div class="player-card-name">${AN.UI._esc(p.name)}</div>
-                    <div class="player-card-meta">${sum.rank} · LV ${sum.level} · Best ${sum.bestScore.toLocaleString()} · ${sum.journeys} runs</div>
+                    <div class="player-card-meta">User ID · ${sum.rank} · LV ${sum.level} · Best ${sum.bestScore.toLocaleString()}</div>
                 </div>
                 <span class="player-card-play">PLAY</span>`;
             btn.onclick = () => AN.UI.selectPlayer(p.id);
@@ -108,7 +125,7 @@ AN.UI.promptDeleteAccount = (id) => {
     AN.UI._deleteForgotMode = false;
     const msg = AN.UI.$('deleteAccountMsg');
     if (msg) {
-        msg.textContent = `Permanently delete "${p.name}" and ALL saved progress (XP, tokens, trophies, upgrades)? This cannot be undone.`;
+        msg.textContent = `Permanently delete User ID "${p.name}" and ALL saved progress (XP, tokens, trophies, upgrades)? This cannot be undone.`;
     }
     const pinField = AN.UI.$('deleteConfirmPin');
     const nameField = AN.UI.$('deleteConfirmName');
@@ -157,7 +174,7 @@ AN.UI.confirmDeleteAccount = () => {
     if (AN.UI._deleteForgotMode) {
         const typed = (AN.UI.$('deleteConfirmName')?.value || '').trim();
         if (typed.toLowerCase() !== p.name.toLowerCase()) {
-            if (err) { err.textContent = 'Name does not match — type the exact account name'; err.classList.remove('hidden'); }
+            if (err) { err.textContent = 'User ID does not match — type the exact User ID'; err.classList.remove('hidden'); }
             return;
         }
     } else {
@@ -239,15 +256,17 @@ AN.UI.confirmPin = () => {
 };
 
 AN.UI.createPlayer = () => {
-    const name = AN.UI.$('newPlayerName')?.value || '';
+    const userId = AN.UI.$('newPlayerName')?.value || '';
     const pin = AN.UI.$('newPlayerPin')?.value || '';
     const err = AN.UI.$('loginError');
-    const p = AN.Profiles.create(name, pin);
-    if (!p) {
+    const result = AN.Profiles.create(userId, pin);
+    if (result.error) {
         if (err) {
-            if (name.trim().length < 2) err.textContent = 'Name must be at least 2 characters';
-            else if (!AN.Profiles._isValidPin(pin)) err.textContent = 'PIN required — enter exactly 4 digits';
-            else err.textContent = 'That name is already taken — pick another';
+            if (result.error === 'length') err.textContent = 'User ID must be 2–18 characters';
+            else if (result.error === 'pin') err.textContent = 'PIN required — enter exactly 4 digits';
+            else if (result.error === 'duplicate') err.textContent = `User ID "${result.userId}" is already taken — pick another`;
+            else if (result.error === 'storage') err.textContent = 'Could not save account — turn off Private Browsing or free storage space';
+            else err.textContent = 'Could not create account — try again';
             err.classList.remove('hidden');
         }
         return;
@@ -255,7 +274,7 @@ AN.UI.createPlayer = () => {
     if (err) err.classList.add('hidden');
     AN.UI.$('newPlayerName').value = '';
     AN.UI.$('newPlayerPin').value = '';
-    AN.Main.loginAs(p.id);
+    AN.Main.loginAs(result.profile.id);
 };
 
 AN.UI.showHub = () => {
@@ -358,6 +377,7 @@ AN.UI.syncDockHeight = () => {
 };
 
 AN.UI.ensurePlayShell = () => {
+    AN.UI.applyDeviceClass?.();
     AN.UI.show('playBackdrop');
     AN.UI.show('statusDock');
     AN.Engine?.setUiMode?.(true);
@@ -468,6 +488,10 @@ AN.UI.levelBanner = (q, index, questions) => {
     let sub = `${diffLabel} difficulty questions`;
     if (lvl > prevLvl && index > 0) {
         sub = `Level ${lvl} unlocked — ${diffLabel.toLowerCase()} questions now!`;
+    }
+    const phone = document.body.classList.contains('is-phone');
+    if (phone) {
+        return { title: `L${lvl} · ${diffLabel.toUpperCase()}`, sub: '' };
     }
     return { title: `LEVEL ${lvl} · ${diffLabel.toUpperCase()}`, sub };
 };

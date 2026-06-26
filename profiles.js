@@ -23,6 +23,47 @@ AN.Profiles.STORAGE_KEY = 'journey1980s_profiles_v1';
 AN.Profiles.LEGACY_KEY = 'journey1980s';
 AN.Profiles.saveKey = (id) => 'journey1980s_player_' + id;
 
+AN.Profiles.normalizeUserId = (userId) => String(userId || '').trim();
+
+AN.Profiles.isUserIdTaken = (userId) => {
+    const id = AN.Profiles.normalizeUserId(userId).toLowerCase();
+    if (!id) return false;
+    return AN.Profiles.list().some(p => p.name.toLowerCase() === id);
+};
+
+AN.Profiles.storageOk = () => {
+    if (AN.Profiles._storageOk != null) return AN.Profiles._storageOk;
+    try {
+        const k = '__journey1980s_storage_test__';
+        localStorage.setItem(k, '1');
+        localStorage.removeItem(k);
+        AN.Profiles._storageOk = true;
+    } catch (_) {
+        AN.Profiles._storageOk = false;
+    }
+    return AN.Profiles._storageOk;
+};
+
+AN.Profiles._setItem = (key, value) => {
+    if (!AN.Profiles.storageOk()) return false;
+    try {
+        localStorage.setItem(key, value);
+        return localStorage.getItem(key) === value;
+    } catch (_) {
+        AN.Profiles._storageOk = false;
+        return false;
+    }
+};
+
+AN.Profiles._removeItem = (key) => {
+    try {
+        localStorage.removeItem(key);
+        return true;
+    } catch (_) {
+        return false;
+    }
+};
+
 AN.Profiles._readRegistry = () => {
     try {
         const raw = localStorage.getItem(AN.Profiles.STORAGE_KEY);
@@ -32,7 +73,7 @@ AN.Profiles._readRegistry = () => {
 };
 
 AN.Profiles._writeRegistry = (reg) => {
-    localStorage.setItem(AN.Profiles.STORAGE_KEY, JSON.stringify(reg));
+    return AN.Profiles._setItem(AN.Profiles.STORAGE_KEY, JSON.stringify(reg));
 };
 
 AN.Profiles._migrateLegacy = () => {
@@ -49,7 +90,7 @@ AN.Profiles._migrateLegacy = () => {
             createdAt: Date.now(),
             lastPlayed: Date.now()
         };
-        localStorage.setItem(AN.Profiles.saveKey(id), legacy);
+        AN.Profiles._setItem(AN.Profiles.saveKey(id), legacy);
         reg.profiles.push(profile);
         reg.activeId = id;
         AN.Profiles._writeRegistry(reg);
@@ -67,7 +108,7 @@ AN.Profiles._purgeNamedProfiles = (names) => {
     const lower = names.map(n => String(n).toLowerCase());
     const removeIds = reg.profiles.filter(p => lower.includes(p.name.toLowerCase())).map(p => p.id);
     if (!removeIds.length) return;
-    removeIds.forEach(id => localStorage.removeItem(AN.Profiles.saveKey(id)));
+    removeIds.forEach(id => AN.Profiles._removeItem(AN.Profiles.saveKey(id)));
     reg.profiles = reg.profiles.filter(p => !removeIds.includes(p.id));
     if (reg.activeId && removeIds.includes(reg.activeId)) reg.activeId = reg.profiles[0]?.id || null;
     AN.Profiles._writeRegistry(reg);
@@ -75,7 +116,7 @@ AN.Profiles._purgeNamedProfiles = (names) => {
 
 AN.Profiles.init = async () => {
     AN.Profiles._migrateLegacy();
-    AN.Profiles._purgeNamedProfiles(['bub', 'rey']);
+    AN.Profiles.storageOk();
     const reg = AN.Profiles._readRegistry();
     let changed = false;
     reg.profiles.forEach(p => {
@@ -117,13 +158,14 @@ AN.Profiles.setActive = (id) => {
     return true;
 };
 
-AN.Profiles.create = (name, pin = '') => {
-    const trimmed = (name || '').trim();
+AN.Profiles.create = (userId, pin = '') => {
+    if (!AN.Profiles.storageOk()) return { error: 'storage' };
+    const trimmed = AN.Profiles.normalizeUserId(userId);
     const pinNorm = AN.Profiles._normalizePin(pin);
-    if (trimmed.length < 2 || trimmed.length > 18) return null;
-    if (!AN.Profiles._isValidPin(pinNorm)) return null;
+    if (trimmed.length < 2 || trimmed.length > 18) return { error: 'length' };
+    if (!AN.Profiles._isValidPin(pinNorm)) return { error: 'pin' };
+    if (AN.Profiles.isUserIdTaken(trimmed)) return { error: 'duplicate', userId: trimmed };
     const reg = AN.Profiles._readRegistry();
-    if (reg.profiles.some(p => p.name.toLowerCase() === trimmed.toLowerCase())) return null;
     const id = 'p_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
     const profile = {
         id,
@@ -135,9 +177,15 @@ AN.Profiles.create = (name, pin = '') => {
     };
     reg.profiles.push(profile);
     reg.activeId = id;
-    AN.Profiles._writeRegistry(reg);
-    localStorage.setItem(AN.Profiles.saveKey(id), JSON.stringify(AN.defaultSave()));
-    return profile;
+    if (!AN.Profiles._writeRegistry(reg)) return { error: 'storage' };
+    const saveJson = JSON.stringify(AN.defaultSave());
+    if (!AN.Profiles._setItem(AN.Profiles.saveKey(id), saveJson)) {
+        reg.profiles = reg.profiles.filter(p => p.id !== id);
+        reg.activeId = reg.profiles[0]?.id || null;
+        AN.Profiles._writeRegistry(reg);
+        return { error: 'storage' };
+    }
+    return { profile };
 };
 
 AN.Profiles.setPin = (id, pin) => {
@@ -174,9 +222,10 @@ AN.Profiles.loadSave = () => {
 
 AN.Profiles.persist = (save) => {
     const id = AN.Profiles.getActiveId();
-    if (!id) return;
-    localStorage.setItem(AN.Profiles.saveKey(id), JSON.stringify(save));
-    AN.Profiles._touch(id);
+    if (!id || !save) return false;
+    const ok = AN.Profiles._setItem(AN.Profiles.saveKey(id), JSON.stringify(save));
+    if (ok) AN.Profiles._touch(id);
+    return ok;
 };
 
 AN.Profiles._loadSaveFor = (id) => {
@@ -237,5 +286,5 @@ AN.Profiles.delete = (id) => {
     reg.profiles = reg.profiles.filter(p => p.id !== id);
     if (reg.activeId === id) reg.activeId = reg.profiles[0]?.id || null;
     AN.Profiles._writeRegistry(reg);
-    localStorage.removeItem(AN.Profiles.saveKey(id));
+    AN.Profiles._removeItem(AN.Profiles.saveKey(id));
 };

@@ -27,6 +27,7 @@ AN.bank = [];
 AN.Main = {
     /* ── INIT: wire up UI buttons, load questions, start game loop ── */
     init() {
+        AN.UI.applyDeviceClass();
         AN._profilesReady = AN.Profiles.init();
         AN.FX.init();
         AN.Engine.init();
@@ -132,7 +133,12 @@ AN.Main = {
             }
         });
         addEventListener('keyup', e => { AN.Engine.keys[e.key] = false; });
-        addEventListener('resize', () => AN.UI.syncDockHeight?.());
+        addEventListener('resize', () => {
+            AN.UI.applyDeviceClass?.();
+            AN.UI.syncDockHeight?.();
+        });
+
+        AN.Main.bindSaveOnExit();
 
         let last = performance.now();
         const loop = (now) => {
@@ -591,8 +597,26 @@ AN.Main = {
         AN.run.pausedRun = AN.run.save.pausedRun || null;
         AN.run.phase = 'hub';
         AN.UI.showHub();
-        const name = AN.Profiles.getActive()?.name || 'Player';
-        AN.UI.toast('Welcome back, ' + name + '!', true);
+        const userId = AN.Profiles.getActive()?.name || 'Player';
+        AN.UI.toast('Welcome back, ' + userId + '!', true);
+    },
+
+    bindSaveOnExit() {
+        const flush = () => {
+            const r = AN.run;
+            if (!r?.save || !AN.Profiles.getActiveId()) return;
+            const inProgress = r.phase === 'play'
+                && Array.isArray(r.questions) && r.questions.length
+                && !r._ending
+                && r.playSub !== 'done'
+                && r.hearts > 0;
+            if (inProgress) AN.Main.savePausedRun();
+            else AN.persist(r.save);
+        };
+        addEventListener('pagehide', flush);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') flush();
+        });
     },
 
     switchPlayer() {
