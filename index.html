@@ -37,7 +37,7 @@
     })();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="game.css?v=111">
+    <link rel="stylesheet" href="game.css?v=112">
 </head>
 <body class="phase-boot">
     <div id="gameLayer">
@@ -75,8 +75,8 @@
                     <div class="login-form">
                         <label class="login-field-label" for="loginUserId">User ID</label>
                         <input type="text" id="loginUserId" class="login-input" maxlength="18" placeholder="Your User ID" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" />
-                        <label class="login-field-label" for="loginPin">PIN</label>
-                        <input type="password" id="loginPin" class="login-input login-pin" maxlength="4" inputmode="numeric" placeholder="4-digit PIN" autocomplete="current-password" />
+                        <label class="login-field-label" for="loginPin">PIN / Password</label>
+                        <input type="password" id="loginPin" class="login-input" maxlength="32" placeholder="4-digit PIN (or admin password)" autocomplete="current-password" />
                         <button type="button" class="arcade-btn arcade-btn-lg" id="btnLoginPlayer">LOGIN</button>
                     </div>
                 </div>
@@ -162,9 +162,10 @@
                     <button type="button" class="arcade-btn arcade-btn-ghost" id="btnLeaderboard">LEADERBOARD</button>
                     <button type="button" class="arcade-btn arcade-btn-ghost" id="btnAchievements">TROPHIES</button>
                     <button type="button" class="arcade-btn arcade-btn-ghost" id="btnHowPlay">HOW TO PLAY</button>
+                    <button type="button" class="arcade-btn arcade-btn-ghost hidden" id="btnAdminPanel">🔧 ADMIN PANEL</button>
                     <button type="button" class="arcade-btn arcade-btn-ghost" id="btnAccessibility">♿ ACCESSIBILITY</button>
                 </div>
-                <div class="hub-danger-zone">
+                <div class="hub-danger-zone" id="hubDangerZone">
                     <p class="danger-label">ACCOUNT</p>
                     <button type="button" class="danger-btn" id="btnDeleteMyAccount">🗑 DELETE MY ACCOUNT</button>
                     <p class="danger-hint">Removes your account and all saved progress permanently</p>
@@ -323,6 +324,17 @@
                 <p class="modal-sub">8 simple trophies — unlock them as you play the quiz</p>
                 <div id="achieveList" class="achieve-list"></div>
                 <button type="button" class="arcade-btn arcade-btn-lg" id="btnCloseAchieve">BACK</button>
+            </div>
+        </section>
+
+        <section id="adminScreen" class="view view-modal hidden">
+            <div class="modal-panel modal-panel-xl admin-modal">
+                <h2>🔧 ADMIN PANEL</h2>
+                <p class="modal-sub">Manage online User IDs — delete accounts or rename / reset PIN</p>
+                <div id="adminUserList" class="admin-user-list">
+                    <p class="admin-loading">Loading accounts…</p>
+                </div>
+                <button type="button" class="arcade-btn arcade-btn-lg" id="btnCloseAdmin">BACK</button>
             </div>
         </section>
 
@@ -505,15 +517,16 @@
     <script src="data.js?v=71"></script>
     <script src="answerImageData.js?v=65"></script>
     <script src="accessibility.js?v=2"></script>
-    <script src="firebase-config.js?v=3"></script>
-    <script src="globalLeaderboard.js?v=5"></script>
-    <script src="profiles.js?v=58"></script>
+    <script src="firebase-config.js?v=4"></script>
+    <script src="globalLeaderboard.js?v=6"></script>
+    <script src="admin.js?v=1"></script>
+    <script src="profiles.js?v=59"></script>
     <script src="cueArt.js?v=62"></script>
     <script src="fx.js?v=34"></script>
     <script src="minigames.js?v=69"></script>
     <script src="worlds.js?v=32"></script>
     <script src="engine.js?v=45"></script>
-    <script src="ui.js?v=84"></script>
-    <script src="main.js?v=74"></script>
+    <script src="ui.js?v=85"></script>
+    <script src="main.js?v=75"></script>
 </body>
 </html>

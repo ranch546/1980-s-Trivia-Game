@@ -307,6 +307,9 @@ AN.UI.loginPlayer = async () => {
     if (result.restored) {
         AN.UI.toast('Signed in as ' + result.profile.name, true);
     }
+    if (result.admin) {
+        AN.UI.toast('Admin signed in', true);
+    }
     AN.Main.loginAs(result.profile.id);
 };
 
@@ -327,6 +330,7 @@ AN.UI.createPlayer = async () => {
                     ? `User ID "${result.userId}" is already taken — sign in above or pick another`
                     : `User ID "${result.userId}" is already taken — sign in above or pick another`;
             }
+            else if (result.error === 'reserved') err.textContent = 'That User ID is reserved';
             else if (result.error === 'storage') err.textContent = 'Could not save account — turn off Private Browsing or free storage space';
             else if (result.error === 'network') err.textContent = 'Could not verify User ID online — check internet connection and try again';
             else err.textContent = 'Could not create account — try again';
@@ -368,6 +372,79 @@ AN.UI.showHub = () => {
             : `90 questions per run · 30 easy + 30 medium + 30 hard · +50 XP · 3 ♥ start`;
     }
     AN.UI.updateHubResume();
+    const isAdmin = AN.Admin?.isActive?.();
+    const adminBtn = AN.UI.$('btnAdminPanel');
+    const dangerZone = AN.UI.$('hubDangerZone');
+    const startWrap = document.querySelector('.hub-start-wrap');
+    if (adminBtn) adminBtn.classList.toggle('hidden', !isAdmin);
+    if (dangerZone) dangerZone.classList.toggle('hidden', !!isAdmin);
+    if (startWrap) startWrap.classList.toggle('hidden', !!isAdmin);
+    const hubTitle = document.querySelector('.hub-title');
+    if (hubTitle && isAdmin) hubTitle.textContent = 'ADMIN CONTROL PANEL';
+    else if (hubTitle) hubTitle.textContent = '1980s TIME TRAVEL TRIVIA';
+};
+
+AN.UI.renderAdminPanel = async () => {
+    const list = AN.UI.$('adminUserList');
+    if (!list) return;
+    if (!AN.Admin?.isActive?.()) {
+        list.innerHTML = '<p class="admin-empty">Admin access required.</p>';
+        return;
+    }
+    list.innerHTML = '<p class="admin-loading">Loading accounts…</p>';
+    const users = await AN.Admin.fetchAllRemoteUsers();
+    if (!users.length) {
+        list.innerHTML = '<p class="admin-empty">No online accounts yet — players can create accounts from the login screen.</p>';
+        return;
+    }
+    list.innerHTML = '';
+    users.forEach(u => {
+        const row = document.createElement('div');
+        row.className = 'admin-user-row';
+        row.innerHTML = `
+            <div class="admin-user-head">
+                <strong class="admin-user-name">${AN.UI._esc(u.name)}</strong>
+                <span class="admin-user-id">${AN.UI._esc(u.globalId)}</span>
+            </div>
+            <div class="admin-user-actions">
+                <input type="text" class="login-input admin-rename-input" maxlength="18" placeholder="New User ID" aria-label="Rename ${AN.UI._esc(u.name)}" />
+                <input type="password" class="login-input login-pin admin-pin-input" maxlength="4" inputmode="numeric" placeholder="New PIN" aria-label="New PIN for ${AN.UI._esc(u.name)}" />
+                <button type="button" class="arcade-btn arcade-btn-ghost admin-btn-rename">RENAME</button>
+                <button type="button" class="arcade-btn arcade-btn-ghost admin-btn-pin">SET PIN</button>
+                <button type="button" class="arcade-btn delete-btn admin-btn-delete">DELETE</button>
+            </div>`;
+        const renameIn = row.querySelector('.admin-rename-input');
+        const pinIn = row.querySelector('.admin-pin-input');
+        row.querySelector('.admin-btn-delete')?.addEventListener('click', async () => {
+            if (!confirm(`Delete online account "${u.name}"? This cannot be undone.`)) return;
+            const res = await AN.Admin.deleteRemoteUser(u.name);
+            if (res.ok) {
+                AN.UI.toast('Deleted ' + u.name, true);
+                AN.UI.renderAdminPanel();
+            } else {
+                AN.UI.toast('Could not delete account', false);
+            }
+        });
+        row.querySelector('.admin-btn-rename')?.addEventListener('click', async () => {
+            const newName = renameIn?.value?.trim();
+            if (!newName) { AN.UI.toast('Enter a new User ID', false); return; }
+            const res = await AN.Admin.renameRemoteUser(u.name, newName);
+            if (res.ok) {
+                AN.UI.toast('Renamed to ' + newName, true);
+                AN.UI.renderAdminPanel();
+            } else if (res.error === 'taken') AN.UI.toast('That User ID is already taken', false);
+            else AN.UI.toast('Could not rename account', false);
+        });
+        row.querySelector('.admin-btn-pin')?.addEventListener('click', async () => {
+            const newPin = pinIn?.value || '';
+            const res = await AN.Admin.setRemotePin(u.name, newPin);
+            if (res.ok) {
+                AN.UI.toast('PIN updated for ' + u.name, true);
+                if (pinIn) pinIn.value = '';
+            } else AN.UI.toast('PIN must be exactly 4 digits', false);
+        });
+        list.appendChild(row);
+    });
 };
 
 AN.UI.updateHubResume = () => {

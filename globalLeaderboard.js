@@ -111,6 +111,31 @@ AN.GlobalLB.releaseUserId = async (userId, globalId) => {
     } catch (_) {}
 };
 
+AN.GlobalLB.clearAllUsers = async () => {
+    if (!AN.GlobalLB.isEnabled()) return false;
+    try {
+        const res = await fetch(AN.GlobalLB._userBase() + '.json', { method: 'DELETE' });
+        return res.ok;
+    } catch (_) {
+        return false;
+    }
+};
+
+/** Wipe leaderboard + all registered User IDs when accountsResetVersion bumps */
+AN.GlobalLB.ensureFreshAccounts = async () => {
+    if (!AN.GlobalLB.isEnabled()) return;
+    const ver = AN.GlobalLB._cfg().accountsResetVersion;
+    if (!ver) return;
+    const key = 'an_accounts_reset_v';
+    if (localStorage.getItem(key) === String(ver)) return;
+    try {
+        await AN.GlobalLB.clearAllUsers();
+        await fetch(AN.GlobalLB._base() + '.json', { method: 'DELETE' });
+        localStorage.setItem(key, String(ver));
+        localStorage.setItem(AN.GlobalLB._pinKey(), String(AN.GlobalLB._cfg().leaderboardResetVersion || ver));
+    } catch (_) {}
+};
+
 AN.GlobalLB._pinKey = () => 'an_lb_reset_v';
 
 /** Clears remote leaderboard once when leaderboardResetVersion bumps in firebase-config.js */

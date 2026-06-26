@@ -96,6 +96,11 @@ AN.Main = {
         AN.UI.bind('btnCloseHelp', () => AN.UI.hide('helpModal'));
         AN.UI.bind('btnAccessibility', () => AN.UI.openA11yModal());
         AN.UI.bind('btnCloseA11y', () => AN.UI.hide('a11yModal'));
+        AN.UI.bind('btnAdminPanel', async () => {
+            await AN.UI.renderAdminPanel();
+            AN.UI.show('adminScreen');
+        });
+        AN.UI.bind('btnCloseAdmin', () => AN.UI.hide('adminScreen'));
         AN.A11y.init();
         AN.UI.bindA11yModal();
         AN.UI.bind('btnVictoryHub', () => AN.Main.toHub());
@@ -633,7 +638,7 @@ AN.Main = {
     loginAs(profileId) {
         if (!AN.Profiles.setActive(profileId)) return;
         const profile = AN.Profiles.getActive();
-        if (profile && AN.GlobalLB?.isEnabled?.()) {
+        if (profile && AN.GlobalLB?.isEnabled?.() && !AN.Admin?.isAdminProfile?.(profile)) {
             AN.GlobalLB.claimUserId(profile.name, profile.globalId).then((ok) => {
                 if (!ok) AN.UI.toast('This User ID is already registered on another device', false);
             });

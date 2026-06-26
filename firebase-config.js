@@ -20,6 +20,8 @@
  */
 window.AN_GLOBAL_LB = {
     databaseURL: 'https://nationals-game-d849e-default-rtdb.firebaseio.com',
-    /** Bump this number to wipe the worldwide leaderboard once (for fresh demo / Nationals). */
-    leaderboardResetVersion: 2
+    /** Bump to wipe worldwide leaderboard once. */
+    leaderboardResetVersion: 3,
+    /** Bump to wipe ALL online accounts + local saves once (fresh start). */
+    accountsResetVersion: 1
 };

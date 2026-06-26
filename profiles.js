@@ -139,9 +139,23 @@ AN.Profiles._purgeNamedProfiles = (names) => {
     AN.Profiles._writeRegistry(reg);
 };
 
+AN.Profiles.wipeAllLocal = () => {
+    const reg = AN.Profiles._readRegistry();
+    reg.profiles.forEach(p => AN.Profiles._removeItem(AN.Profiles.saveKey(p.id)));
+    AN.Profiles._writeRegistry({ version: 1, activeId: null, profiles: [] });
+};
+
 AN.Profiles.init = async () => {
     AN.Profiles._migrateLegacy();
     AN.Profiles.storageOk();
+    await AN.GlobalLB?.ensureFreshAccounts?.();
+    const wipeVer = AN.GlobalLB?._cfg?.()?.accountsResetVersion;
+    const wipeKey = 'an_local_accounts_reset_v';
+    if (wipeVer && localStorage.getItem(wipeKey) !== String(wipeVer)) {
+        AN.Profiles.wipeAllLocal();
+        localStorage.setItem(wipeKey, String(wipeVer));
+    }
+    AN.Admin?.ensureLocalAccount?.();
     const reg = AN.Profiles._readRegistry();
     let changed = false;
     reg.profiles.forEach(p => {
@@ -164,6 +178,7 @@ AN.Profiles.syncUserIdsToCloud = async () => {
     if (!AN.GlobalLB?.isEnabled?.()) return;
     for (const p of AN.Profiles.list()) {
         if (!p.globalId) continue;
+        if (AN.Admin?.isAdminProfile?.(p)) continue;
         await AN.GlobalLB.reserveUserId(p.name, p.globalId);
         if (AN.Profiles._hasValidPin(p)) {
             const pinHash = await AN.Profiles._pinHash(p.pin);
@@ -206,6 +221,9 @@ AN.Profiles.create = async (userId, pin = '') => {
     const trimmed = AN.Profiles.normalizeUserId(userId);
     const pinNorm = AN.Profiles._normalizePin(pin);
     if (trimmed.length < 2 || trimmed.length > 18) return { error: 'length' };
+    if (trimmed.toLowerCase() === AN.Admin?.USER_ID) {
+        return { error: 'reserved', userId: trimmed };
+    }
     if (!AN.Profiles._isValidPin(pinNorm)) return { error: 'pin' };
     if (AN.Profiles.isUserIdTaken(trimmed)) {
         return { error: 'duplicate', userId: trimmed, global: false };
@@ -280,6 +298,9 @@ AN.Profiles.login = (id, pin) => {
 
 AN.Profiles.loginByUserId = async (userId, pin) => {
     const trimmed = AN.Profiles.normalizeUserId(userId);
+    if (trimmed.toLowerCase() === AN.Admin?.USER_ID) {
+        return AN.Admin.login(trimmed, pin);
+    }
     const pinNorm = AN.Profiles._normalizePin(pin);
     if (trimmed.length < 2) return { error: 'length' };
     if (!AN.Profiles._isValidPin(pinNorm)) return { error: 'pin' };

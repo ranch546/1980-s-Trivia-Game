@@ -3111,3 +3111,32 @@ html.a11y-colorblind .xp-fill {
     background: linear-gradient(90deg, var(--cyan), var(--green)) !important;
 }
 
+/* ── ADMIN PANEL ── */
+.admin-modal .modal-sub { margin-bottom: 16px; }
+.admin-user-list {
+    display: flex; flex-direction: column; gap: 12px;
+    max-height: min(52vh, 480px); overflow-y: auto; margin-bottom: 20px;
+}
+.admin-user-row {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,43,214,0.25);
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+.admin-user-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    margin-bottom: 12px; flex-wrap: wrap;
+}
+.admin-user-name { font-size: 1.15rem; color: var(--gold); }
+.admin-user-id { font-size: 0.8rem; color: #889; font-family: monospace; }
+.admin-user-actions {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.admin-rename-input, .admin-pin-input {
+    flex: 1 1 120px; min-width: 100px;
+    padding: 10px 12px !important; font-size: 0.95rem !important;
+}
+.admin-loading, .admin-empty {
+    text-align: center; color: #99a; padding: 24px 12px; font-size: 1.05rem;
+}
+
