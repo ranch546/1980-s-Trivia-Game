@@ -99,7 +99,11 @@ AN.Profiles._migrateLegacy = () => {
     return reg;
 };
 
-AN.Profiles._normalizePin = (pin) => String(pin || '').replace(/\D/g, '').slice(0, 4);
+AN.Profiles._normalizePin = (pin) => String(pin ?? '').replace(/\D/g, '').slice(0, 4);
+
+AN.Profiles._profilePin = (p) => AN.Profiles._normalizePin(p?.pin);
+
+AN.Profiles._hasValidPin = (p) => AN.Profiles._isValidPin(AN.Profiles._profilePin(p));
 
 AN.Profiles._isValidPin = (pin) => AN.Profiles._normalizePin(pin).length === 4;
 
@@ -122,6 +126,11 @@ AN.Profiles.init = async () => {
     reg.profiles.forEach(p => {
         if (!p.globalId) {
             p.globalId = 'g_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            changed = true;
+        }
+        const pinNorm = AN.Profiles._profilePin(p);
+        if (p.pin !== pinNorm) {
+            p.pin = pinNorm;
             changed = true;
         }
     });
@@ -201,8 +210,9 @@ AN.Profiles.setPin = (id, pin) => {
 
 AN.Profiles.checkPin = (id, pin) => {
     const p = AN.Profiles.get(id);
-    if (!p || !AN.Profiles._isValidPin(p.pin)) return false;
-    return AN.Profiles._normalizePin(pin) === p.pin;
+    const stored = AN.Profiles._profilePin(p);
+    if (!p || !AN.Profiles._isValidPin(stored)) return false;
+    return AN.Profiles._normalizePin(pin) === stored;
 };
 
 AN.Profiles.login = (id, pin) => {

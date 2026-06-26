@@ -51,6 +51,7 @@ AN.Main = {
         AN.UI.bind('btnPinConfirm', () => AN.UI.confirmPin());
         AN.UI.bind('btnPinCancel', () => {
             AN.UI.hide('pinModal');
+            document.body.classList.remove('pin-modal-open');
             AN.UI._pendingLoginId = null;
         });
         AN.UI.bind('btnSwitchPlayer', () => AN.Main.switchPlayer());

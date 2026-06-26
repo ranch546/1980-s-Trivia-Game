@@ -1979,8 +1979,8 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     .year-node { flex: 0 0 72px; }
 }
 
-/* Inside #uiFit — MacBook / fine-pointer only (200vw canvas + scale) */
-@media (hover: hover) and (pointer: fine) {
+/* Inside #uiFit — MacBook / fine-pointer only (200vw canvas + scale); never phones */
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
     html:not(.is-touch) #uiFit {
         position: absolute;
         width: 200vw;
@@ -2720,6 +2720,7 @@ body.is-phone #shakeRoot {
     min-height: 100dvh;
     overflow-x: hidden !important;
     overflow-y: visible !important;
+    pointer-events: auto !important;
 }
 html.is-touch #uiFit,
 body.is-phone #uiFit {
@@ -2731,6 +2732,37 @@ body.is-phone #uiFit {
     transform: none !important;
     overflow-x: hidden !important;
     overflow-y: visible !important;
+    pointer-events: auto !important;
+}
+html.is-touch #gameLayer,
+html.is-touch .scanlines,
+html.is-touch #fxCanvas,
+html.is-touch .play-backdrop,
+body.is-phone #gameLayer,
+body.is-phone .scanlines,
+body.is-phone #fxCanvas,
+body.is-phone .play-backdrop {
+    pointer-events: none !important;
+}
+html.is-touch .player-card,
+html.is-touch .player-delete-btn,
+html.is-touch .hub-start-btn,
+html.is-touch .hub-resume-btn,
+html.is-touch .arcade-btn,
+html.is-touch .login-input,
+html.is-touch .view-modal button,
+html.is-touch .view-modal input,
+body.is-phone .player-card,
+body.is-phone .player-delete-btn,
+body.is-phone .hub-start-btn,
+body.is-phone .hub-resume-btn,
+body.is-phone .arcade-btn,
+body.is-phone .login-input,
+body.is-phone .view-modal button,
+body.is-phone .view-modal input {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0, 245, 255, 0.25);
 }
 html.is-touch #uiFit .view,
 html.is-touch #uiFit .view-hub,
@@ -2764,8 +2796,8 @@ body.is-phone #uiFit .hub-shell {
     height: auto !important;
     max-height: none !important;
 }
-html.is-touch #uiFit .view:not(.hidden),
-body.is-phone #uiFit .view:not(.hidden) {
+html.is-touch #uiFit .view:not(.hidden):not(.view-modal),
+body.is-phone #uiFit .view:not(.hidden):not(.view-modal) {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -2777,6 +2809,25 @@ body.is-phone #uiFit .view:not(.hidden) {
     padding-left: 10px !important;
     padding-right: 10px !important;
     padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+}
+html.is-touch #uiFit .view-modal:not(.hidden),
+body.is-phone #uiFit .view-modal:not(.hidden) {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    z-index: 100 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    background: rgba(0, 0, 0, 0.92) !important;
 }
 html.is-touch .hub-shell,
 html.is-touch .login-shell,
@@ -2795,4 +2846,54 @@ body.is-phone .trivia-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     width: 100% !important;
     max-width: 100% !important;
+}
+
+/* ═══ HARD LOCK — touch / narrow screens: NO Mac scale, fit viewport ═══ */
+@media (max-width: 932px), (hover: none), (pointer: coarse) {
+    html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: clip !important;
+        overflow-y: auto !important;
+        font-size: 14px !important;
+        -webkit-text-size-adjust: 100% !important;
+        text-size-adjust: 100% !important;
+    }
+    #shakeRoot, #uiFit {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 100dvh !important;
+        transform: none !important;
+        scale: 1 !important;
+        overflow-x: clip !important;
+    }
+    .play-backdrop {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        overflow: hidden !important;
+    }
+    .pb-grid, .boot-grid {
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .login-shell, .hub-shell, .arcade-cabinet, .trivia-panel, .modal-panel {
+        width: 100% !important;
+        max-width: min(100%, 400px) !important;
+        box-sizing: border-box !important;
+    }
+    .login-title { font-size: 1.65rem !important; }
+    .logo-main { font-size: 1.85rem !important; }
+    .hub-brand { font-size: 1.45rem !important; }
+    .trivia-cards { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .trivia-question { font-size: 0.95rem !important; }
+    .tc-text { font-size: 0.8rem !important; }
+    .status-dock { max-width: 100vw !important; }
 }

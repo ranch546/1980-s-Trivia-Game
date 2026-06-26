@@ -25,12 +25,17 @@ AN.UI.show = (id) => AN.UI.$(id)?.classList.remove('hidden');
 AN.UI.hide = (id) => AN.UI.$(id)?.classList.add('hidden');
 
 AN.UI.isPhoneDevice = () =>
-    window.matchMedia('(hover: none) and (pointer: coarse)').matches
-    || window.matchMedia('(max-width: 768px)').matches;
+    document.documentElement.classList.contains('is-touch')
+    || document.documentElement.classList.contains('phone-fit')
+    || window.matchMedia('(hover: none)').matches
+    || window.matchMedia('(pointer: coarse)').matches
+    || window.matchMedia('(max-width: 932px)').matches
+    || ('ontouchstart' in window);
 
 AN.UI.applyDeviceClass = () => {
     const phone = AN.UI.isPhoneDevice();
     document.documentElement.classList.toggle('is-touch', phone);
+    document.documentElement.classList.toggle('phone-fit', phone);
     document.body.classList.toggle('is-phone', phone);
     document.body.classList.toggle('is-desktop', !phone);
 };
@@ -99,7 +104,7 @@ AN.UI.renderPlayerList = () => {
             wrap.className = 'player-card-wrap';
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = 'player-card' + (p.id === activeId ? ' active' : '') + (p.pin ? ' has-pin' : '');
+            btn.className = 'player-card' + (p.id === activeId ? ' active' : '') + (AN.Profiles._hasValidPin(p) ? ' has-pin' : '');
             btn.innerHTML = `
                 <div>
                     <div class="player-card-name">${AN.UI._esc(p.name)}</div>
@@ -217,17 +222,19 @@ AN.UI.selectPlayer = (id) => {
     const p = AN.Profiles.get(id);
     if (!p) return;
     AN.UI._pendingLoginId = id;
-    AN.UI._pinMode = AN.Profiles._isValidPin(p.pin) ? 'login' : 'setup';
-    AN.UI.$('pinModalTitle').textContent = AN.UI._pinMode === 'setup'
+    const needsPin = !AN.Profiles._hasValidPin(p);
+    AN.UI._pinMode = needsPin ? 'setup' : 'login';
+    AN.UI.$('pinModalTitle').textContent = needsPin
         ? 'SET YOUR PIN'
         : ('HI ' + p.name.toUpperCase());
-    AN.UI.$('pinModalSub').textContent = AN.UI._pinMode === 'setup'
-        ? 'Choose a 4-digit PIN (required)'
+    AN.UI.$('pinModalSub').textContent = needsPin
+        ? 'Your account needs a 4-digit PIN — choose one now'
         : 'Enter your 4-digit PIN';
     AN.UI.$('pinInput').value = '';
     AN.UI.$('pinError')?.classList.add('hidden');
     AN.UI.show('pinModal');
-    setTimeout(() => AN.UI.$('pinInput')?.focus(), 100);
+    document.body.classList.add('pin-modal-open');
+    setTimeout(() => AN.UI.$('pinInput')?.focus(), 150);
 };
 
 AN.UI.confirmPin = () => {
@@ -241,6 +248,7 @@ AN.UI.confirmPin = () => {
             return;
         }
         AN.UI.hide('pinModal');
+        document.body.classList.remove('pin-modal-open');
         AN.UI._pendingLoginId = null;
         AN.UI._pinMode = 'login';
         AN.Main.loginAs(id);
@@ -252,7 +260,7 @@ AN.UI.confirmPin = () => {
         return;
     }
     AN.UI.hide('pinModal');
-    AN.UI._pendingLoginId = null;
+    document.body.classList.remove('pin-modal-open');
     AN.Main.loginAs(id);
 };
 
