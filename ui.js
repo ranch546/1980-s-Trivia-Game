@@ -30,6 +30,7 @@ AN.UI.isPhoneDevice = () =>
 
 AN.UI.applyDeviceClass = () => {
     const phone = AN.UI.isPhoneDevice();
+    document.documentElement.classList.toggle('is-touch', phone);
     document.body.classList.toggle('is-phone', phone);
     document.body.classList.toggle('is-desktop', !phone);
 };

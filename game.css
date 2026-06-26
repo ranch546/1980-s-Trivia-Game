@@ -57,13 +57,14 @@ html, body {
     overflow: hidden;
     pointer-events: none;
 }
-/* Halves entire UI — same as browser zoom 50% at zoom 100% */
+/* Phone / touch: natural 1:1 layout. MacBook: scale hack below. */
 #uiFit {
-    position: absolute;
+    position: relative;
     top: 0; left: 0;
-    width: 200vw;
-    height: 200vh;
-    transform: scale(0.5);
+    width: 100%;
+    min-height: 100dvh;
+    height: auto;
+    transform: none;
     transform-origin: top left;
     pointer-events: none;
 }
@@ -1640,7 +1641,9 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     position: relative; z-index: 1; min-height: 0;
     align-content: stretch; align-items: stretch; overflow: hidden;
 }
-@media (min-width: 800px) { .trivia-cards { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 800px) and (hover: hover) and (pointer: fine) {
+    .trivia-cards { grid-template-columns: repeat(4, 1fr); }
+}
 
 .trivia-card {
     display: flex; flex-direction: column; border-radius: 16px; overflow: hidden;
@@ -1976,152 +1979,166 @@ body.phase-play .trivia-timer-ring.critical span { animation: none; }
     .year-node { flex: 0 0 72px; }
 }
 
-/* Inside #uiFit, fill the 200vw×200vh canvas */
-#uiFit .view { position: absolute; inset: 0; }
-#uiFit .view-hub,
-#uiFit .view-boot,
-#uiFit .view-login,
-#uiFit .view-warp,
-#uiFit .view-victory,
-#uiFit .trivia-screen,
-#uiFit .trivia-result,
-#uiFit .minigame-screen,
-#uiFit .view-modal,
-#uiFit .view-level-advance {
-    min-height: 100% !important;
-    height: 100% !important;
-    max-height: 100% !important;
-}
-#uiFit .phase-play .trivia-screen,
-#uiFit .phase-play .trivia-result:not(.hidden),
-#uiFit .phase-play .minigame-screen:not(.hidden) {
-    min-height: 100% !important;
-    height: 100% !important;
-}
-#uiFit .hub-shell { min-height: 100% !important; height: 100% !important; }
-#uiFit .arcade-cabinet { flex: 1 1 auto; min-height: 0; height: auto; max-height: 100%; }
+/* Inside #uiFit — MacBook / fine-pointer only (200vw canvas + scale) */
+@media (hover: hover) and (pointer: fine) {
+    html:not(.is-touch) #uiFit {
+        position: absolute;
+        width: 200vw;
+        height: 200vh;
+        min-height: 0;
+        transform: scale(0.5);
+    }
+    html:not(.is-touch) #shakeRoot {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+    }
+    html:not(.is-touch) #uiFit .view { position: absolute; inset: 0; }
+    html:not(.is-touch) #uiFit .view-hub,
+    html:not(.is-touch) #uiFit .view-boot,
+    html:not(.is-touch) #uiFit .view-login,
+    html:not(.is-touch) #uiFit .view-warp,
+    html:not(.is-touch) #uiFit .view-victory,
+    html:not(.is-touch) #uiFit .trivia-screen,
+    html:not(.is-touch) #uiFit .trivia-result,
+    html:not(.is-touch) #uiFit .minigame-screen,
+    html:not(.is-touch) #uiFit .view-modal,
+    html:not(.is-touch) #uiFit .view-level-advance {
+        min-height: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+    html:not(.is-touch) #uiFit .phase-play .trivia-screen,
+    html:not(.is-touch) #uiFit .phase-play .trivia-result:not(.hidden),
+    html:not(.is-touch) #uiFit .phase-play .minigame-screen:not(.hidden) {
+        min-height: 100% !important;
+        height: 100% !important;
+    }
+    html:not(.is-touch) #uiFit .hub-shell { min-height: 100% !important; height: 100% !important; }
+    html:not(.is-touch) #uiFit .arcade-cabinet { flex: 1 1 auto; min-height: 0; height: auto; max-height: 100%; }
 
-#uiFit .trivia-result:not(.hidden) {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 35 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: calc(var(--dock-h, 140px) + 8px) 24px 24px !important;
-}
-#uiFit .result-panel,
-#uiFit .arcade-result {
-    width: 90% !important;
-    max-width: 720px !important;
-    margin: 0 auto !important;
-}
-#uiFit .result-panel-full {
-    max-height: calc(100% - 12px) !important;
-}
+    html:not(.is-touch) #uiFit .trivia-result:not(.hidden) {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 35 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: calc(var(--dock-h, 140px) + 8px) 24px 24px !important;
+    }
+    html:not(.is-touch) #uiFit .result-panel,
+    html:not(.is-touch) #uiFit .arcade-result {
+        width: 90% !important;
+        max-width: 720px !important;
+        margin: 0 auto !important;
+    }
+    html:not(.is-touch) #uiFit .result-panel-full {
+        max-height: calc(100% - 12px) !important;
+    }
 
-#uiFit #helpModal.view-modal-help:not(.hidden) {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    padding: 8px !important;
-    z-index: 40 !important;
-}
-#uiFit .help-modal-fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none !important;
-    max-height: none !important;
-    border-radius: 12px !important;
-    padding: clamp(20px, 3vh, 36px) clamp(24px, 4vw, 48px) !important;
-}
-#uiFit .help-modal-fullscreen h2 {
-    font-size: clamp(2.4rem, 6vw, 4rem) !important;
-}
-#uiFit .help-modal-fullscreen .modal-sub {
-    font-size: clamp(1.2rem, 2.8vw, 1.8rem) !important;
-}
-#uiFit .help-modal-fullscreen .help-card-title {
-    font-size: clamp(1.3rem, 3vw, 1.85rem) !important;
-}
-#uiFit .help-modal-fullscreen .help-card-list {
-    font-size: clamp(1.05rem, 2.2vw, 1.35rem) !important;
-    line-height: 1.45 !important;
-}
-#uiFit .help-modal-fullscreen .help-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 14px 18px !important;
-    overflow-y: auto;
-}
-#uiFit .help-modal-fullscreen .modal-landscape-btn {
-    font-size: clamp(1.1rem, 2.5vw, 1.45rem) !important;
-    padding: 14px 32px !important;
-    flex-shrink: 0;
-}
+    html:not(.is-touch) #uiFit #helpModal.view-modal-help:not(.hidden) {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 8px !important;
+        z-index: 40 !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        border-radius: 12px !important;
+        padding: clamp(20px, 3vh, 36px) clamp(24px, 4vw, 48px) !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen h2 {
+        font-size: clamp(2.4rem, 6vw, 4rem) !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen .modal-sub {
+        font-size: clamp(1.2rem, 2.8vw, 1.8rem) !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen .help-card-title {
+        font-size: clamp(1.3rem, 3vw, 1.85rem) !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen .help-card-list {
+        font-size: clamp(1.05rem, 2.2vw, 1.35rem) !important;
+        line-height: 1.45 !important;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen .help-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px 18px !important;
+        overflow-y: auto;
+    }
+    html:not(.is-touch) #uiFit .help-modal-fullscreen .modal-landscape-btn {
+        font-size: clamp(1.1rem, 2.5vw, 1.45rem) !important;
+        padding: 14px 32px !important;
+        flex-shrink: 0;
+    }
 
-/* Victory — own full screen inside scaled #uiFit (fixes left-shift / cut-off) */
-#uiFit .view-victory:not(.hidden),
-#uiFit .view-defeat:not(.hidden) {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 50 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    justify-content: stretch !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-}
-#uiFit .view-victory .victory-bg {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    pointer-events: none;
-}
-#uiFit .view-victory .victory-burst {
-    position: absolute !important;
-    left: 50% !important;
-    top: 38% !important;
-    transform: translate(-50%, -50%) !important;
-    pointer-events: none;
-}
-#uiFit .view-victory .victory-hub-corner {
-    position: absolute !important;
-    top: clamp(12px, 2vh, 20px) !important;
-    right: clamp(12px, 2vw, 24px) !important;
-    left: auto !important;
-    z-index: 4 !important;
-}
-#uiFit .victory-shell {
-    position: relative !important;
-    z-index: 2 !important;
-    flex: 1 1 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 auto !important;
-    min-height: 100% !important;
-    height: auto !important;
-    box-sizing: border-box !important;
-}
-#uiFit .victory-stats,
-#uiFit .loot-reveal,
-#uiFit .victory-actions {
-    width: min(820px, 92%) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    /* Victory — full screen inside scaled #uiFit */
+    html:not(.is-touch) #uiFit .view-victory:not(.hidden),
+    html:not(.is-touch) #uiFit .view-defeat:not(.hidden) {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 50 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+    }
+    html:not(.is-touch) #uiFit .view-victory .victory-bg {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none;
+    }
+    html:not(.is-touch) #uiFit .view-victory .victory-burst {
+        position: absolute !important;
+        left: 50% !important;
+        top: 38% !important;
+        transform: translate(-50%, -50%) !important;
+        pointer-events: none;
+    }
+    html:not(.is-touch) #uiFit .view-victory .victory-hub-corner {
+        position: absolute !important;
+        top: clamp(12px, 2vh, 20px) !important;
+        right: clamp(12px, 2vw, 24px) !important;
+        left: auto !important;
+        z-index: 4 !important;
+    }
+    html:not(.is-touch) #uiFit .victory-shell {
+        position: relative !important;
+        z-index: 2 !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 auto !important;
+        min-height: 100% !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+    }
+    html:not(.is-touch) #uiFit .victory-stats,
+    html:not(.is-touch) #uiFit .loot-reveal,
+    html:not(.is-touch) #uiFit .victory-actions {
+        width: min(820px, 92%) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
 body.phase-victory #statusDock,
 body.phase-victory #playBackdrop,
@@ -2675,4 +2692,107 @@ body.is-phone.phase-play .trivia-screen,
 body.is-phone.phase-play .trivia-result:not(.hidden),
 body.is-phone.phase-play .minigame-screen:not(.hidden) {
     padding-top: calc(var(--dock-h, 100px) + 6px) !important;
+}
+
+/* ═══ TOUCH / PHONE SHELL — no MacBook scale; works in landscape too ═══ */
+html.is-touch,
+body.is-phone {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+html.is-touch body,
+body.is-phone {
+    font-size: 16px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100dvh;
+    width: 100% !important;
+    max-width: 100vw !important;
+}
+html.is-touch #shakeRoot,
+body.is-phone #shakeRoot {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100dvh;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}
+html.is-touch #uiFit,
+body.is-phone #uiFit {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100dvh;
+    transform: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}
+html.is-touch #uiFit .view,
+html.is-touch #uiFit .view-hub,
+html.is-touch #uiFit .view-boot,
+html.is-touch #uiFit .view-login,
+html.is-touch #uiFit .view-warp,
+html.is-touch #uiFit .view-victory,
+html.is-touch #uiFit .trivia-screen,
+html.is-touch #uiFit .trivia-result,
+html.is-touch #uiFit .minigame-screen,
+html.is-touch #uiFit .view-modal,
+html.is-touch #uiFit .view-level-advance,
+html.is-touch #uiFit .hub-shell,
+body.is-phone #uiFit .view,
+body.is-phone #uiFit .view-hub,
+body.is-phone #uiFit .view-boot,
+body.is-phone #uiFit .view-login,
+body.is-phone #uiFit .view-warp,
+body.is-phone #uiFit .view-victory,
+body.is-phone #uiFit .trivia-screen,
+body.is-phone #uiFit .trivia-result,
+body.is-phone #uiFit .minigame-screen,
+body.is-phone #uiFit .view-modal,
+body.is-phone #uiFit .view-level-advance,
+body.is-phone #uiFit .hub-shell {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+html.is-touch #uiFit .view:not(.hidden),
+body.is-phone #uiFit .view:not(.hidden) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+}
+html.is-touch .hub-shell,
+html.is-touch .login-shell,
+html.is-touch .arcade-cabinet,
+html.is-touch .trivia-panel,
+body.is-phone .hub-shell,
+body.is-phone .login-shell,
+body.is-phone .arcade-cabinet,
+body.is-phone .trivia-panel {
+    width: 100% !important;
+    max-width: min(100%, 400px) !important;
+    box-sizing: border-box !important;
+}
+html.is-touch .trivia-cards,
+body.is-phone .trivia-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
