@@ -28,51 +28,63 @@ AN.GlobalLB.fetchUsernameEntry = async (userId) => {
     if (!key) return null;
     try {
         const res = await fetch(AN.GlobalLB._userBase() + '/' + encodeURIComponent(key) + '.json');
-        if (!res.ok) return null;
+        if (!res.ok) return { __error: true };
         const data = await res.json();
+        if (data == null) return null;
         return data && typeof data === 'object' ? data : null;
     } catch (_) {
-        return null;
+        return { __error: true };
     }
 };
 
-/** True if this User ID is already registered on another device/account */
+/** True = taken, false = free, null = could not check online */
 AN.GlobalLB.isUserIdTakenRemote = async (userId, exceptGlobalId = null) => {
     const entry = await AN.GlobalLB.fetchUsernameEntry(userId);
+    if (entry && entry.__error) return null;
     if (!entry || !entry.globalId) return false;
     if (exceptGlobalId && entry.globalId === exceptGlobalId) return false;
     return true;
 };
 
-/** Reserve User ID globally (one per name worldwide) */
-AN.GlobalLB.claimUserId = async (userId, globalId) => {
-    if (!AN.GlobalLB.isEnabled() || !globalId) return true;
+/** Reserve User ID globally — check, write, then verify we own it */
+AN.GlobalLB.reserveUserId = async (userId, globalId) => {
+    if (!AN.GlobalLB.isEnabled() || !globalId) return { status: 'ok' };
     const trimmed = AN.Profiles.normalizeUserId(userId);
     const key = AN.GlobalLB.userIdKey(trimmed);
-    if (!key) return false;
+    if (!key) return { status: 'error' };
     const taken = await AN.GlobalLB.isUserIdTakenRemote(trimmed, globalId);
-    if (taken) return false;
+    if (taken === null) return { status: 'error' };
+    if (taken) return { status: 'taken' };
+    const url = AN.GlobalLB._userBase() + '/' + encodeURIComponent(key) + '.json';
+    const payload = { name: trimmed, globalId, updatedAt: Date.now() };
     try {
-        const res = await fetch(AN.GlobalLB._userBase() + '/' + encodeURIComponent(key) + '.json', {
+        const res = await fetch(url, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: trimmed,
-                globalId,
-                updatedAt: Date.now()
-            })
+            body: JSON.stringify(payload)
         });
-        return res.ok;
+        if (!res.ok) return { status: 'error' };
+        const verifyRes = await fetch(url);
+        if (!verifyRes.ok) return { status: 'error' };
+        const verify = await verifyRes.json();
+        if (!verify || verify.globalId !== globalId) return { status: 'taken' };
+        return { status: 'ok' };
     } catch (_) {
-        return false;
+        return { status: 'error' };
     }
+};
+
+/** Reserve User ID globally (one per name worldwide) */
+AN.GlobalLB.claimUserId = async (userId, globalId) => {
+    const result = await AN.GlobalLB.reserveUserId(userId, globalId);
+    return result.status === 'ok';
 };
 
 /** Free User ID when account is deleted (only if we own it) */
 AN.GlobalLB.releaseUserId = async (userId, globalId) => {
     if (!AN.GlobalLB.isEnabled() || !globalId) return;
     const entry = await AN.GlobalLB.fetchUsernameEntry(userId);
-    if (!entry || entry.globalId !== globalId) return;
+    if (!entry || entry.__error || entry.globalId !== globalId) return;
     const key = AN.GlobalLB.userIdKey(userId);
     if (!key) return;
     try {

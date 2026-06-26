@@ -75,6 +75,7 @@ AN.UI.showLogin = () => {
     AN.UI.hidePlay();
     AN.UI.show('loginScreen');
     AN.UI.renderPlayerList();
+    AN.Profiles.syncUserIdsToCloud();
     const err = AN.UI.$('loginError');
     if (err) {
         err.classList.add('hidden');
@@ -282,6 +283,7 @@ AN.UI.createPlayer = async () => {
                     : `User ID "${result.userId}" is already taken on this device — pick another`;
             }
             else if (result.error === 'storage') err.textContent = 'Could not save account — turn off Private Browsing or free storage space';
+            else if (result.error === 'network') err.textContent = 'Could not verify User ID online — check internet connection and try again';
             else err.textContent = 'Could not create account — try again';
             err.classList.remove('hidden');
         }

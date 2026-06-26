@@ -136,10 +136,14 @@ AN.Profiles.init = async () => {
     });
     if (changed) AN.Profiles._writeRegistry(reg);
     await AN.GlobalLB?.ensureFreshBoard?.();
-    if (AN.GlobalLB?.isEnabled?.()) {
-        for (const p of reg.profiles) {
-            await AN.GlobalLB.claimUserId(p.name, p.globalId);
-        }
+    await AN.Profiles.syncUserIdsToCloud();
+};
+
+AN.Profiles.syncUserIdsToCloud = async () => {
+    if (!AN.GlobalLB?.isEnabled?.()) return;
+    for (const p of AN.Profiles.list()) {
+        if (!p.globalId) continue;
+        await AN.GlobalLB.reserveUserId(p.name, p.globalId);
     }
 };
 
@@ -181,9 +185,14 @@ AN.Profiles.create = async (userId, pin = '') => {
     if (AN.Profiles.isUserIdTaken(trimmed)) {
         return { error: 'duplicate', userId: trimmed, global: false };
     }
+    const globalId = 'g_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     if (AN.GlobalLB?.isEnabled?.()) {
-        if (await AN.GlobalLB.isUserIdTakenRemote(trimmed)) {
+        const remote = await AN.GlobalLB.reserveUserId(trimmed, globalId);
+        if (remote.status === 'taken') {
             return { error: 'duplicate', userId: trimmed, global: true };
+        }
+        if (remote.status === 'error') {
+            return { error: 'network' };
         }
     }
     const reg = AN.Profiles._readRegistry();
@@ -192,29 +201,23 @@ AN.Profiles.create = async (userId, pin = '') => {
         id,
         name: trimmed,
         pin: pinNorm,
-        globalId: 'g_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+        globalId,
         createdAt: Date.now(),
         lastPlayed: Date.now()
     };
     reg.profiles.push(profile);
     reg.activeId = id;
-    if (!AN.Profiles._writeRegistry(reg)) return { error: 'storage' };
+    if (!AN.Profiles._writeRegistry(reg)) {
+        if (AN.GlobalLB?.isEnabled?.()) AN.GlobalLB.releaseUserId(trimmed, globalId);
+        return { error: 'storage' };
+    }
     const saveJson = JSON.stringify(AN.defaultSave());
     if (!AN.Profiles._setItem(AN.Profiles.saveKey(id), saveJson)) {
         reg.profiles = reg.profiles.filter(p => p.id !== id);
         reg.activeId = reg.profiles[0]?.id || null;
         AN.Profiles._writeRegistry(reg);
+        if (AN.GlobalLB?.isEnabled?.()) AN.GlobalLB.releaseUserId(trimmed, globalId);
         return { error: 'storage' };
-    }
-    if (AN.GlobalLB?.isEnabled?.()) {
-        const claimed = await AN.GlobalLB.claimUserId(trimmed, profile.globalId);
-        if (!claimed) {
-            reg.profiles = reg.profiles.filter(p => p.id !== id);
-            reg.activeId = reg.profiles[0]?.id || null;
-            AN.Profiles._writeRegistry(reg);
-            AN.Profiles._removeItem(AN.Profiles.saveKey(id));
-            return { error: 'duplicate', userId: trimmed, global: true };
-        }
     }
     return { profile };
 };
