@@ -46,17 +46,19 @@ AN.GlobalLB.isUserIdTakenRemote = async (userId, exceptGlobalId = null) => {
     return true;
 };
 
-/** Reserve User ID globally — check, write, then verify we own it */
-AN.GlobalLB.reserveUserId = async (userId, globalId) => {
+/** Reserve User ID globally — never wipe pinHash on update */
+AN.GlobalLB.reserveUserId = async (userId, globalId, opts = {}) => {
     if (!AN.GlobalLB.isEnabled() || !globalId) return { status: 'ok' };
     const trimmed = AN.Profiles.normalizeUserId(userId);
     const key = AN.GlobalLB.userIdKey(trimmed);
     if (!key) return { status: 'error' };
-    const taken = await AN.GlobalLB.isUserIdTakenRemote(trimmed, globalId);
-    if (taken === null) return { status: 'error' };
-    if (taken) return { status: 'taken' };
+    const existing = await AN.GlobalLB.fetchUsernameEntry(trimmed);
+    if (existing && existing.__error) return { status: 'error' };
+    if (existing?.globalId && existing.globalId !== globalId) return { status: 'taken' };
     const url = AN.GlobalLB._userBase() + '/' + encodeURIComponent(key) + '.json';
+    const pinHash = opts.pinHash || existing?.pinHash || null;
     const payload = { name: trimmed, globalId, updatedAt: Date.now() };
+    if (pinHash) payload.pinHash = pinHash;
     try {
         const res = await fetch(url, {
             method: 'PUT',
@@ -74,23 +76,20 @@ AN.GlobalLB.reserveUserId = async (userId, globalId) => {
     }
 };
 
+/** Sync raw PIN to cloud (hashes locally first) */
+AN.GlobalLB.syncAccountCredentials = async (userId, globalId, pin) => {
+    if (!AN.GlobalLB.isEnabled() || !globalId) return false;
+    const pinHash = await AN.Profiles._pinHash(pin);
+    if (!pinHash) return false;
+    const result = await AN.GlobalLB.reserveUserId(userId, globalId, { pinHash });
+    return result.status === 'ok';
+};
+
 /** PATCH account meta (PIN hash) when we own this User ID */
 AN.GlobalLB.syncPinHash = async (userId, globalId, pinHash) => {
     if (!AN.GlobalLB.isEnabled() || !globalId || !pinHash) return false;
-    const entry = await AN.GlobalLB.fetchUsernameEntry(userId);
-    if (!entry || entry.__error || entry.globalId !== globalId) return false;
-    const key = AN.GlobalLB.userIdKey(userId);
-    if (!key) return false;
-    try {
-        const res = await fetch(AN.GlobalLB._userBase() + '/' + encodeURIComponent(key) + '.json', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pinHash, updatedAt: Date.now() })
-        });
-        return res.ok;
-    } catch (_) {
-        return false;
-    }
+    const result = await AN.GlobalLB.reserveUserId(userId, globalId, { pinHash });
+    return result.status === 'ok';
 };
 
 /** Reserve User ID globally (one per name worldwide) */
